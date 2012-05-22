@@ -1,0 +1,9 @@
+Django==1.4
+South==0.7.5
+Werkzeug==0.8.3
+django-appconf==0.5
+django-compressor==1.1.2
+django-extensions==0.8
+psycopg2==2.4.5
+python-memcached==1.48
+wsgiref==0.1.2

@@ -1,0 +1,25 @@
+Installation
+============
+
+## Create a configuration for your environment
+
+### create a file environment.py in <project root>
+
+make sure to replace name by your *env name*
+
+	# -*- coding: utf-8 -*-
+	NAME               = 'staging'
+	IS_FOR_DEVELOPMENT = True
+
+### Create a file configuration/_50_env_<your env name>.py
+use e..g configuration/_50_env_boerni.py as 
+
+## Setup virtualenv
+
+ * chdir to <project root>
+ * mkdir env_default
+ * virtualenv --no-site-packages env_default
+ * source env_default/bin/activate
+ * pip install -r REQUIREMENTS
+	
+
