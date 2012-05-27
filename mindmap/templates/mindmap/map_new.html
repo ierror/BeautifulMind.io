@@ -1,4 +1,4 @@
-{% load bootstrap compress %}
+{% load compress %}
 
 {% compress js %}
 <script type="text/javascript">
@@ -8,7 +8,4 @@
 </script>
 {% endcompress %}
 
-<form class="form-horizontal" action="." method="POST">
-    {{ form|bootstrap }}
-    {% csrf_token %}
-</form>
+{% include 'includes/form.html' %}

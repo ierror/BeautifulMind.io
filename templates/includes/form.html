@@ -1,0 +1,5 @@
+{% load bootstrap %}
+<form class="form-horizontal" action="." method="POST">
+    {{ form|bootstrap }}
+    {% csrf_token %}
+</form>
