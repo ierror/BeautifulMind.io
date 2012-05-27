@@ -1,0 +1,14 @@
+{% load bootstrap compress %}
+
+{% compress js %}
+<script type="text/javascript">
+    {% if form.is_bound and form.is_valid %}
+        window.location = '{{ form.instance.get_absolute_url }}';
+    {% endif %}
+</script>
+{% endcompress %}
+
+<form class="form-horizontal" action="." method="POST">
+    {{ form|bootstrap }}
+    {% csrf_token %}
+</form>

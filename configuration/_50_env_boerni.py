@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from settings import DEBUG
+import settings
 
 
 DATABASES = {
@@ -12,3 +12,12 @@ DATABASES = {
         'PORT'     : '',
     }
 }
+
+MEDIA_URL = 'http://localhost:8000/assets/'
+
+if not settings.DEBUG:
+    STATIC_URL = 'http://localhost:8000/assets/static/'
+
+COMPRESS_ENABLED = False
+
+MINDMAPTORNADO_SERVER = 'http://192.168.100.200:1234/echo'

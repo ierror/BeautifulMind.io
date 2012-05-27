@@ -1,0 +1,13 @@
+TODO
+====
+
+## General
+* activate Gzip?
+* use cookie based sessions?
+* cleanup scrollwheel stuff?
+
+## Deployment
+* use memcach
+
+## Doc
+* create cache Table ./manage.py createcachetable cache

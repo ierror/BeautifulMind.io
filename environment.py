@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
-NAME               = 'boerni'
+NAME = 'boerni'
 IS_FOR_DEVELOPMENT = True

@@ -1,0 +1,110 @@
+{% load compress i18n %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BeautifulMind.io - {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Le styles -->
+    {% compress css %}
+    <link href="{{ STATIC_URL }}css/global.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    {% endcompress %}
+
+    <!-- app styles -->
+    {% block app_css %}{% endblock %}
+    <!-- /app styles -->
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    {% compress js %}
+    <script src="{{ STATIC_URL }}js/lib/html5shiv.js"></script>
+    {% endcompress %}
+
+    <![endif]-->
+
+    <link rel="shortcut icon" href="{{ STATIC_URL }}images/favicon.gif">
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="">BeautifulMind</span><span class="brand-dot">.</span>io</a>
+
+            <div class="btn-group pull-right">
+                <a class="btn btn-small btn-success pull-right" data-toggle="modal" href="#mindmap-new">
+                    <i class="icon-plus icon-white"></i> Map
+                </a>
+            </div>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- main content -->
+    {% block content %}{% endblock %}
+    <!-- /main content -->
+</div>
+<!-- /container -->
+
+<!-- add map modal -->
+<div id="mindmap-new" class="modal modal-form hide" data-url="{% url mindmap_map_new %}" data-title="{% trans 'Create new mind map' %}">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h3></h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-success">
+            <li class="icon-ok icon-white"></li>
+            {% trans 'Add' %}
+        </a>
+    </div>
+</div>
+<!-- /add map modal -->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<!-- global javascript -->
+{% compress js %}
+<script src="{{ STATIC_URL }}js/lib/sockjs-0.3.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/lib/jquery-ui-1.8.20.custom.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/lib/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/boostrap.modal.form.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}mindmap/js/global.js" type="text/javascript" charset="utf-8"></script>
+{% endcompress %}
+
+{% include 'includes/global_js_vars.html' %}
+
+<!-- /global javascript -->
+
+<!-- app javascript -->
+{% block app_js %}{% endblock %}
+<!-- /app javascript -->
+
+</body>
+</html>
