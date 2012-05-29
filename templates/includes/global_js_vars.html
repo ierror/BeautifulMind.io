@@ -2,9 +2,16 @@
 {% compress js inline %}
 <script type="text/javascript">
     var bm_globals = {
-        'static_url': '{{ STATIC_URL }}',
-        'media_url': '{{ MEDIA_URL }}',
-        'mindmaptornado_server': '{{MINDMAPTORNADO_SERVER}}'
+        static_url: '{{ STATIC_URL }}',
+        media_url: '{{ MEDIA_URL }}',
+
+        mindmap: {
+            map_component_update_pos_url: '{% url mindmap_map_component_update_pos '#1#' '#2#' %}'
+        },
+
+        mindmaptornado: {
+            server:'{{MINDMAPTORNADO_SERVER}}'
+        }
     }
 </script>
 {% endcompress %}

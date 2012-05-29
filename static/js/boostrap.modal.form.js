@@ -39,6 +39,7 @@
                                 return false;
                             }
                         });
+
                         submit_btn.removeClass('disabled');
                     },
                     error: function() {

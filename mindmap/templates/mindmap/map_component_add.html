@@ -1,0 +1,10 @@
+{% load compress %}
+{% compress js %}
+<script type="text/javascript">
+    {% if form.is_bound and form.is_valid %}
+        $('#mindmap-component-new').modal('hide');
+    {% endif %}
+</script>
+{% endcompress %}
+
+{% include 'includes/form.html' %}
