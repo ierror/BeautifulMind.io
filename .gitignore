@@ -1,5 +1,7 @@
-.idea/
+environment.py
 virtualenv/
-*.pyc
 assets/*
+
+*.pyc
+.idea/
 .DS_Store
