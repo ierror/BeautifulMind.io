@@ -43,7 +43,7 @@ class MindmapWebSocketHandler(SockJSConnection):
 
     def on_close(self):
         for map_pk in self._maps_participants.keys():
-            if self in self._maps_participants[map_pk]:
+            if self in self._maps_participants.get(map_pk, []):
                 self._lock.acquire()
 
                 # remove client from map
@@ -53,7 +53,10 @@ class MindmapWebSocketHandler(SockJSConnection):
                     pass
 
                 # remove map if no participants remains on map
-                if not len(self._maps_participants[map_pk]):
-                    del self._maps_participants[map_pk]
+                try:
+                    if not len(self._maps_participants[map_pk]):
+                        del self._maps_participants[map_pk]
+                except KeyError:
+                    pass
 
                 self._lock.release()
