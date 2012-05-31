@@ -1,8 +1,6 @@
 $(document).ready(function(){
     $('.modal-form').modalForm();
 
-    $('#mindmap-map').mindmapMap();
-
     // make django csrf workable with ajax posts
     $.ajaxSetup({
         beforeSend:function (xhr, settings) {

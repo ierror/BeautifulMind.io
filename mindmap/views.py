@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.db.models.expressions import F
 from django.http import HttpResponse
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
@@ -64,10 +65,24 @@ def map_component_update_pos(request, mindmap_pk, component_pk):
     component = get_object_or_404(MindMapComponent, pk=component_pk)
 
     response_data = {'success' : False}
-    if request.method == 'POST' and ('left' and 'top' in request.POST):
-        component.pos_left = request.POST['left']
-        component.pos_top = request.POST['top']
+    if request.method == 'POST' and ('pos_left' and 'pos_top' in request.POST):
+        component.pos_left = request.POST['pos_left']
+        component.pos_top = request.POST['pos_top']
         component.save()
+        response_data = {'success' : True}
+
+    return HttpResponse(simplejson.dumps(response_data), 'application/json')
+
+
+def map_components_add_offset(request, mindmap_pk):
+    mindmap = get_object_or_404(MindMap, pk=mindmap_pk)
+    response_data = {'success' : False}
+
+    if request.method == 'POST' and ('offset_left' and 'offset_top' and 'component_exclude_pk' in request.POST):
+        mindmap.root_component.get_descendants(include_self=True).exclude(pk=request.POST['component_exclude_pk']).update(
+            pos_left = F('pos_left') + int(request.POST['offset_left']),
+            pos_top = F('pos_top') + int(request.POST['offset_top'])
+        )
         response_data = {'success' : True}
 
     return HttpResponse(simplejson.dumps(response_data), 'application/json')

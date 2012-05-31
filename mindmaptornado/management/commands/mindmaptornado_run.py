@@ -4,6 +4,7 @@ from tornado import web
 from tornado import ioloop
 from optparse import make_option
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from mindmaptornado import handlers
 
 
@@ -20,6 +21,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         MindmapWebSocketRouter = SockJSRouter(handlers.MindmapWebSocketHandler, '/echo')
 
-        app = web.Application(MindmapWebSocketRouter.urls)
+        app_kwargs = {}
+        if settings.ENVIRONMENT.IS_FOR_DEVELOPMENT:
+            app_kwargs['debug'] = True
+
+        app = web.Application(MindmapWebSocketRouter.urls, **app_kwargs)
         app.listen(1234)
         ioloop.IOLoop.instance().start()
