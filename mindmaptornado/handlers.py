@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from threading import Lock
 from sockjs.tornado import SockJSConnection
-from mindmaptornado.decorators import check_for_component_pk, check_for_data
 from tornado.escape import json_decode, json_encode
 from .exceptions import HTTPException
-from .decorators import check_for_map_pk
+from .decorators import check_for_map_pk, check_for_component_pk, check_for_data
 
 
 class MindmapWebSocketHandler(SockJSConnection):
@@ -45,10 +44,10 @@ class MindmapWebSocketHandler(SockJSConnection):
         try:
             data = json_decode(data)
         except ValueError:
-            raise self._die(log_message='Unable to decode json')
+            self._die(log_message='Unable to decode json')
 
         if type(data).__name__ != 'dict' or 'method' not in data:
-            raise self._die(log_message='data is not a dict or no key "method" in data dict found. Data: %s' % data)
+            self._die(log_message='data is not a dict or no key "method" in data dict found. Data: %s' % data)
 
         # define available methods
         methods = {
