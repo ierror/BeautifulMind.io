@@ -6,6 +6,7 @@ TODO
 * use cookie based sessions?
 * cleanup scrollwheel stuff?
 * modal on connection to sockjs server lost => reconnect
+*
 
 ## Deployment
 * use memcache

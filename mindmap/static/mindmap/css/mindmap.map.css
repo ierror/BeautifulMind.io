@@ -1,10 +1,4 @@
-#demo {
-    width: 100%;
-    height: 400px;
-    position: relative;
-}
-
-.component {
+#mindmap-map .component {
     opacity: 0.8;
     filter: alpha(opacity = 80);
     background-color: white;
@@ -17,11 +11,11 @@
     padding-bottom: 5em;
     padding-right: .5em;
 
-    -moz-border-radius: 1.5em 1.5em 1.5em 1.5em;
+        -moz-border-radius: 1.5em 1.5em 1.5em 1.5em;
     border-radius: 1.5em 1.5em 1.5em 1.5em;
 
-    -moz-box-shadow:    0px 0px 0px 3px #ccc;
-    -webkit-box-shadow: 0px 0px 0px 3px #ccc;
+        -moz-box-shadow:    0px 0px 0px 3px #ccc;
+        -webkit-box-shadow: 0px 0px 0px 3px #ccc;
     box-shadow:         2px 2px 5px 2px #ccc;
 
     border: 2px solid #4183c4;
@@ -31,12 +25,31 @@
     position: absolute;
 }
 
-.component-root {
+#mindmap-map .component-selected {
+    border-color: #778899;
+}
+
+#mindmap-map .component-root {
     background-color: #4183c4;
     color: white;
 }
 
-.component-title {
+#mindmap-map .component .component-title {
+    font-size: 12px;
+    line-height: 18px;
+    margin: 0;
+    font-family: inherit;
+    font-weight: bold;
+    color: inherit;
+    text-rendering: optimizelegibility;
     text-align: center;
     height: 36px;
+    border: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+        -moz-box-shadow: none;
+        -webkit-box-shadow: none;
+    box-shadow: none;
+    background-color: transparent;
 }

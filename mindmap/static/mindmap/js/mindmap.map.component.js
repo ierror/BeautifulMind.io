@@ -2,9 +2,35 @@
     $.fn.mindmapMapComponent = function(opts) {
         var self = this;
 
+        // clone component from tpl
+        self = $('#component-tpl').clone()
+            .attr('id', 'mindmap-component-'+opts.id)
+            .css('display', 'block');
+
         self.last_sent_dragg_pos = [0, 0];
         self.cross_shift_offset_total = [0, 0];
         self.cross_shift_offset_current = [0, 0];
+
+        self.toggleSelect = function() {
+            $('#mindmap-map .component').removeClass('component-selected');
+            self.toggleClass('component-selected');
+        }
+
+        var title = $('.component-title:first', self);
+        title.attr('value', opts.title);
+        title.on('click', function(){
+            title.focus();
+            title.on('keydown', function(e) {
+                if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab
+                    title.blur();
+                    return false;
+                }
+            });
+        });
+        self.css({
+            left: opts.left,
+            top: opts.top
+        });
 
         self.get_compontent_id = function(id) {
             return 'mindmap-component-'+id;
@@ -14,32 +40,22 @@
             return $('.component:not(#'+self.get_compontent_id(opts.id)+')');
         }
 
+        // root component get special color
+        if(opts.level == 0) {
+            self.addClass('component-root');
+        }
+
+        self.attr('data-parent-component-pk', opts.parent_id);
+        self.attr('data-component-pk', opts.id);
+
+        var map_pk = $('#mindmap-map').attr('data-map-pk');
+
         jsPlumb.ready(function () {
-            // clone component from tpl
-            var component = $('#component-tpl').clone()
-                .attr('id', self.get_compontent_id(opts.id))
-                .css('display', 'block');
-
-            component.find('.component-title').html(opts.title);
-            component.css({
-                left: opts.left,
-                top: opts.top
-            });
-
-            // root component get special color
-            if(opts.level == 0) {
-                component.addClass('component-root');
-            }
-
-            component.attr('data-parent-component-pk', opts.parent_id);
-            component.attr('data-component-pk', opts.id);
-
-            var map_pk = $('#mindmap-map').attr('data-map-pk');
-
             // make compontent draggable
-            jsPlumb.draggable(component, {
+            jsPlumb.draggable(self, {
+                scroll: true,
                 stop: function () {
-                    var pos = component.position();
+                    var pos = self.position();
                     // send last pos to client
                     $().mindmapSockjs.send('update_component_pos', {
                         map_pk: map_pk,
@@ -88,7 +104,7 @@
                     }
                 },
                 drag: function() {
-                    var pos = component.position();
+                    var pos = self.position();
 
                     // send pos update
                     // get length ->last_pos to ->current-pos
@@ -110,6 +126,7 @@
                         }
 
                         self.get_components_except_myself().each(function(){
+                            console.log(this);
                             var comp_to_move = $(this),
                                 comp_to_move_pos_left = comp_to_move.position().left + cross_shift,
                                 comp_to_move_pos_top = comp_to_move.position().top + cross_shift;
@@ -147,15 +164,12 @@
 
                         self.last_sent_dragg_pos = [pos.left, pos.top];
                     }
-                },
-                scroll: true
+                }
             });
-            opts.container.append(component);
+            opts.container.append(self);
 
             if (opts.parent_id) {
                 var parent = $('#'+self.get_compontent_id(opts.parent_id));
-                var parent_pos = parent.position();
-                //component.offset({top:parent_pos.top + 100, left:parent_pos.left + 650});
                 jsPlumb.connect({
                     source: parent,
                     target: $('#'+self.get_compontent_id(opts.id)),
@@ -166,21 +180,24 @@
                         outlineWidth: 1,
                         outlineColor: "white"
                     },
-                    endpoint: "Blank"
+                    endpoint: "Blank",
+                    connector:[ "Bezier", { curviness: 13 } ]
                 });
             }
 
-            component.on('click', '.btn-component-add', function () {
+            self.on('click', '.btn-component-add', function () {
                 var modal = $('#mindmap-component-new');
                 modal.modal('show');
-                $('#id_parent', modal).attr('value', component.attr('data-component-pk') || '');
+                $('#id_parent', modal).attr('value', self.attr('data-component-pk') || '');
                 $('#id_pos_left', modal).attr('value', 250);
                 $('#id_pos_top', modal).attr('value', 90);
+            });
 
-                //var parent = $(this).parent().parent();
-                //add_box({ title:'Window Main-10', id:'makeunique2', parent:parent });
+            self.on('click', function() {
+               self.toggleSelect();
             });
         });
 
+        return self;
     };
 })(jQuery);

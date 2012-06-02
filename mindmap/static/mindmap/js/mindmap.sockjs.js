@@ -28,8 +28,6 @@
                     $('.component:not(#'+data['component_except_pk']+')').each(function(){
                         var component = $(this);
                         var pos = component.position();
-                        console.log('uououo');
-
                         component.css({
                             left: pos.left + data['offset_left'],
                             top: pos.top + data['offset_top']

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- codin g: utf-8 -*-
 from django.core.management.base import CommandError
 import os, sys, environment
 
