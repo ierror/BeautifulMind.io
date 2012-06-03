@@ -1,5 +1,5 @@
 (function($) {
-    $.fn.mindmapSockjs = function() {
+    $.mindmapSockjs = function() {
         var self = this;
         self.socket = new SockJS(bm_globals.mindmaptornado.server);
 
@@ -18,6 +18,13 @@
 
         self.socket.onmessage = function(e) {
             var client_methods = {
+                'add_component': function(data) {
+                    data.left = data.pos.left;
+                    data.top = data.pos.top;
+                    $('#mindmap-map').add_component(data);
+                    jsPlumb.repaint(component);
+                },
+
                 'update_component_pos': function(data) {
                     var component = $('.component[data-component-pk="'+data.component_pk+'"]:first');
                     component.css({left: data.pos.left, top: data.pos.top});
@@ -25,12 +32,12 @@
                 },
 
                 'add_components_offset_except_one': function(data) {
-                    $('.component:not(#'+data['component_except_pk']+')').each(function(){
+                    $('.component:not([data-component-pk="'+data.except_component_pk+'"])').each(function(){
                         var component = $(this);
                         var pos = component.position();
                         component.css({
-                            left: pos.left + data['offset_left'],
-                            top: pos.top + data['offset_top']
+                            left: pos.left + data.offset_left,
+                            top: pos.top + data.offset_top
                         });
                     });
                     jsPlumb.repaintEverything();

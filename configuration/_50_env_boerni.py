@@ -13,11 +13,11 @@ DATABASES = {
     }
 }
 
-MEDIA_URL = 'http://10.0.0.4:8000/assets/'
+MEDIA_URL = 'http://localhost:8000/assets/'
 
 if not settings.DEBUG:
-    STATIC_URL = 'http://10.0.0.4:8000/assets/static/'
+    STATIC_URL = 'http://localhost:8000/assets/static/'
 
 COMPRESS_ENABLED = False
 
-MINDMAPTORNADO_SERVER = 'http://10.0.0.4:1234/echo'
+MINDMAPTORNADO_SERVER = 'http://localhost:1234/echo'

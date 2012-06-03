@@ -1,203 +1,244 @@
-(function($) {
-    $.fn.mindmapMapComponent = function(opts) {
+/*!
+ * jQuery lightweight plugin boilerplate
+ * Original author: @ajpiano
+ * Further changes, comments: @addyosmani
+ * Licensed under the MIT license
+ */
+
+;
+(function ($, window, document, undefined) {
+    var version = '0.1',
+        defaults = {
+            cross_shift_offset:10
+        };
+
+    function MindMapComponent(self, opts) {
+        var self = this;
+        self.options = $.extend({}, defaults, opts);
+        self._defaults = defaults;
+        self.pk = undefined;
+        self.map = undefined;
+        self.map_pk = undefined;
+
+        self._last_sent_dragg_pos = [0, 0];
+        self._cross_shift_offset_total = [0, 0];
+        self._cross_shift_offset_current = [0, 0];
+
+        jsPlumb.ready(function () {
+            self.init(opts);
+        });
+    }
+
+    MindMapComponent.prototype.setId = function (id) {
+        var self = this;
+        self.pk = id;
+        self.element.attr('id', 'mindmap-component-' + id);
+        self.element.attr('data-component-pk', id);
+    }
+
+    MindMapComponent.prototype.init = function (opts) {
         var self = this;
 
+        // set map container
+        self.map = opts.container;
+        self.map_pk = opts.container.data('map-pk');
+
         // clone component from tpl
-        self = $('#component-tpl').clone()
-            .attr('id', 'mindmap-component-'+opts.id)
-            .css('display', 'block');
+        self.element = $('#component-tpl').clone().css('display', 'block');
 
-        self.last_sent_dragg_pos = [0, 0];
-        self.cross_shift_offset_total = [0, 0];
-        self.cross_shift_offset_current = [0, 0];
+        // set ids
+        self.setId(opts.pk)
 
-        self.toggleSelect = function() {
-            $('#mindmap-map .component').removeClass('component-selected');
-            self.toggleClass('component-selected');
-        }
+        // write parent pk
+        self.element.attr('data-parent-component-pk', opts.parent_pk);
 
-        var title = $('.component-title:first', self);
+        // title stuff
+        var title = $('.component-title:first', self.element);
         title.attr('value', opts.title);
-        title.on('click', function(){
+        title.on('click', function () {
             title.focus();
-            title.on('keydown', function(e) {
+            title.on('keydown', function (e) {
                 if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab
                     title.blur();
                     return false;
                 }
             });
         });
-        self.css({
-            left: opts.left,
-            top: opts.top
+
+        // positioning
+        self.element.css({
+            left:opts.left,
+            top:opts.top
         });
 
-        self.get_compontent_id = function(id) {
-            return 'mindmap-component-'+id;
-        }
-
-        self.get_components_except_myself = function() {
-            return $('.component:not(#'+self.get_compontent_id(opts.id)+')');
-        }
-
         // root component get special color
-        if(opts.level == 0) {
-            self.addClass('component-root');
+        if (opts.level == 0) {
+            self.element.addClass('component-root');
         }
 
-        self.attr('data-parent-component-pk', opts.parent_id);
-        self.attr('data-component-pk', opts.id);
+        // make compontent draggable
+        jsPlumb.draggable(self.element, {
+            scroll:true,
+            stop:function () {
+                var pos = self.element.position();
 
-        var map_pk = $('#mindmap-map').attr('data-map-pk');
+                // send last pos to client
+                $.mindmapSockjs.send('update_component_pos', {
+                    map_pk:self.map_pk,
+                    component_pk:self.pk,
+                    pos:pos
+                });
 
-        jsPlumb.ready(function () {
-            // make compontent draggable
-            jsPlumb.draggable(self, {
-                scroll: true,
-                stop: function () {
-                    var pos = self.position();
-                    // send last pos to client
-                    $().mindmapSockjs.send('update_component_pos', {
-                        map_pk: map_pk,
-                        component_pk: opts.id,
-                        pos: pos
-                    });
+                // update last pos in db
+                var url = bm_globals.mindmap.map_component_update_pos_url.replace('#1#', self.map_pk).replace('#2#', self.pk);
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    data:{
+                        'pos_left':pos.left,
+                        'pos_top':pos.top
+                    },
+                    cache:false
+                });
 
-                    // update last pos in db
-                    var url = bm_globals.mindmap.map_component_update_pos_url.replace('#1#', map_pk).replace('#2#', opts.id);
+                // save crosshift offset
+                if (self._cross_shift_offset_total[0] || self._cross_shift_offset_total[1]) {
+                    var url = bm_globals.mindmap.map_components_add_offset.replace('#1#', self.map_pk);
                     $.ajax({
-                        url: url,
-                        type: 'POST',
-                        data: {
-                            'pos_left': pos.left,
-                            'pos_top': pos.top
+                        url:url,
+                        type:'POST',
+                        data:{
+                            'offset_left':self._cross_shift_offset_total[0],
+                            'offset_top':self._cross_shift_offset_total[1],
+                            'component_exclude_pk':self.pk
                         },
-                        cache: false
+                        cache:false
                     });
+                    self._cross_shift_offset_total = [0, 0];
+                }
 
-                    // save crosshift offset
-                    if (self.cross_shift_offset_total[0] || self.cross_shift_offset_total[1]) {
-                        var url = bm_globals.mindmap.map_components_add_offset.replace('#1#', map_pk);
-                        $.ajax({
-                            url: url,
-                            type: 'POST',
-                            data: {
-                                'offset_left': self.cross_shift_offset_total[0],
-                                'offset_top': self.cross_shift_offset_total[1],
-                                'component_exclude_pk': opts.id
-                            },
-                            cache: false
-                        });
-                        self.cross_shift_offset_total = [0, 0];
+                // "flush" cross_shift_offset_current (send to client)
+                if (self._cross_shift_offset_current[0] || self._cross_shift_offset_current[1]) {
+                    $.mindmapSockjs.send('add_components_offset_except_one', {
+                        map_pk:self.map_pk,
+                        except_component_pk:self.pk,
+                        offset_left:self._cross_shift_offset_current[0],
+                        offset_top:self._cross_shift_offset_current[1]
+                    });
+                    self._cross_shift_offset_current = [0, 0];
+                }
+            },
+            drag:function () {
+                var pos = self.element.position();
+
+                // get length vector last_pos->current-pos
+                var length = Math.sqrt(
+                    Math.pow(self._last_sent_dragg_pos[0] - pos.left, 2) + Math.pow(self._last_sent_dragg_pos[1] - pos.top, 2)
+                );
+
+                // special shift: shift all other components down/right if dragged component crosses top/left border
+                if (pos.left < 0 || pos.top < 0) {
+                    if (pos.left < 0) {
+                        self._cross_shift_offset_current[0] += self.options.cross_shift_offset;
+                        self._cross_shift_offset_total[0] += self.options.cross_shift_offset;
+                    }
+                    if (pos.top < 0) {
+                        self._cross_shift_offset_current[1] += self.options.cross_shift_offset;
+                        self._cross_shift_offset_total[1] += self.options.cross_shift_offset;
                     }
 
-                    // "flush" cross_shift_offset_current (send to client)
-                    if (self.cross_shift_offset_current[0] || self.cross_shift_offset_current[1]) {
-                        console.log('flush');
-                        $().mindmapSockjs.send('add_components_offset_except_one', {
-                            map_pk: map_pk,
-                            except_component_pk: opts.id,
-                            offset_left: self.cross_shift_offset_current[0],
-                            offset_top: self.cross_shift_offset_current[1]
-                        });
-                        self.cross_shift_offset_current = [0, 0];
-                    }
-                },
-                drag: function() {
-                    var pos = self.position();
-
-                    // send pos update
-                    // get length ->last_pos to ->current-pos
-                    var length = Math.sqrt(
-                        Math.pow(self.last_sent_dragg_pos[0]-pos.left, 2) + Math.pow(self.last_sent_dragg_pos[1]-pos.top, 2)
-                    );
-
-                    // special shift: shift all other components down/right if dragged comp. crosses top/left border
-                    if (pos.left < 0 || pos.top < 0) {
-                        var cross_shift = 10;
+                    self.getComponentsExceptMyself().each(function () {
+                        var comp_to_move = $(this),
+                            comp_to_move_pos_left = comp_to_move.position().left + self.options.cross_shift_offset,
+                            comp_to_move_pos_top = comp_to_move.position().top + self.options.cross_shift_offset;
 
                         if (pos.left < 0) {
-                            self.cross_shift_offset_current[0] += cross_shift;
-                            self.cross_shift_offset_total[0] += cross_shift;
+                            comp_to_move.css({left:comp_to_move_pos_left});
                         }
                         if (pos.top < 0) {
-                            self.cross_shift_offset_current[1] += cross_shift;
-                            self.cross_shift_offset_total[1] += cross_shift;
+                            comp_to_move.css({top:comp_to_move_pos_top});
                         }
+                        jsPlumb.repaint(comp_to_move);
+                    });
 
-                        self.get_components_except_myself().each(function(){
-                            console.log(this);
-                            var comp_to_move = $(this),
-                                comp_to_move_pos_left = comp_to_move.position().left + cross_shift,
-                                comp_to_move_pos_top = comp_to_move.position().top + cross_shift;
-
-                            if (pos.left < 0) {
-                                comp_to_move.css({left: comp_to_move_pos_left});
-                            }
-                            if (pos.top < 0) {
-                                comp_to_move.css({top: comp_to_move_pos_top});
-                            }
-                            jsPlumb.repaint(comp_to_move);
+                    if (length > 20) {
+                        $.mindmapSockjs.send('add_components_offset_except_one', {
+                            map_pk:self.map_pk,
+                            except_component_pk:self.pk,
+                            offset_left:self._cross_shift_offset_current[0],
+                            offset_top:self._cross_shift_offset_current[1]
                         });
 
-                        if (length > 20) {
-                            $().mindmapSockjs.send('add_components_offset_except_one', {
-                                map_pk: map_pk,
-                                except_component_pk: opts.id,
-                                offset_left: self.cross_shift_offset_current[0],
-                                offset_top: self.cross_shift_offset_current[1]
-                            });
-
-                            self.cross_shift_offset_current = [0, 0];
-                        }
-
-                        self.last_sent_dragg_pos = [pos.left, pos.top];
+                        self._cross_shift_offset_current = [0, 0];
                     }
-                    // regular shift
-                    else if (length > 100) {
-                        console.log('update_component_pos');
-                        $().mindmapSockjs.send('update_component_pos', {
-                            map_pk: map_pk,
-                            component_pk: opts.id,
-                            pos: pos
-                        });
 
-                        self.last_sent_dragg_pos = [pos.left, pos.top];
-                    }
+                    self._last_sent_dragg_pos = [pos.left, pos.top];
                 }
-            });
-            opts.container.append(self);
+                // regular shift
+                else if (length > 100) {
+                    $.mindmapSockjs.send('update_component_pos', {
+                        map_pk:self.map_pk,
+                        component_pk:self.pk,
+                        pos:pos
+                    });
 
-            if (opts.parent_id) {
-                var parent = $('#'+self.get_compontent_id(opts.parent_id));
-                jsPlumb.connect({
-                    source: parent,
-                    target: $('#'+self.get_compontent_id(opts.id)),
-                    anchor: "AutoDefault",
-                    paintStyle: {
-                        lineWidth: 0.5,
-                        strokeStyle: "gray",
-                        outlineWidth: 1,
-                        outlineColor: "white"
-                    },
-                    endpoint: "Blank",
-                    connector:[ "Bezier", { curviness: 13 } ]
-                });
+                    self._last_sent_dragg_pos = [pos.left, pos.top];
+                }
             }
+        });
 
-            self.on('click', '.btn-component-add', function () {
-                var modal = $('#mindmap-component-new');
-                modal.modal('show');
-                $('#id_parent', modal).attr('value', self.attr('data-component-pk') || '');
-                $('#id_pos_left', modal).attr('value', 250);
-                $('#id_pos_top', modal).attr('value', 90);
-            });
+        // append component to map container
+        opts.container.append(self.element);
 
-            self.on('click', function() {
-               self.toggleSelect();
+        // draw connector of component is none root element
+        if (opts.parent_pk) {
+            var parent = $('#' + self.getDomId(opts.parent_pk));
+            jsPlumb.connect({
+                source:parent,
+                target:self.element,
+                anchor:"AutoDefault",
+                paintStyle:{
+                    lineWidth:0.5,
+                    strokeStyle:"gray",
+                    outlineWidth:1,
+                    outlineColor:"white"
+                },
+                endpoint:"Blank",
+                connector:[ "Bezier", { curviness:13 } ]
             });
+        }
+
+        self.element.on('click', '.btn-component-add', function () {
+            var modal = $('#mindmap-component-new');
+            modal.modal('show');
+            $('#id_parent', modal).attr('value', self.element.data('data-component-pk') || '');
+            $('#id_pos_left', modal).attr('value', 250);
+            $('#id_pos_top', modal).attr('value', 90);
+        });
+
+        self.element.on('click', function () {
+            self.toggleSelect();
         });
 
         return self;
     };
-})(jQuery);
+
+    MindMapComponent.prototype.toggleSelect = function () {
+        var self = this;
+        $('.component', self.map).removeClass('component-selected'); // deselect all components
+        self.element.toggleClass('component-selected');
+    }
+
+    MindMapComponent.prototype.getDomId = function (id) {
+        return 'mindmap-component-' + id;
+    }
+
+    MindMapComponent.prototype.getComponentsExceptMyself = function () {
+        return $('.component:not(#' + this.getDomId(this.pk) + ')', this.map);
+    }
+
+    $.mindmapMapComponent = function (options) {
+        return new MindMapComponent(this, options);
+    }
+
+})(jQuery, window, document);
