@@ -35,10 +35,6 @@
             Connector:[ "Bezier", { curviness:25 } ]
         });
 
-        var connectorStrokeColor = "rgba(50, 50, 200, 1)",
-            connectorHighlightStrokeColor = "rgba(180, 180, 200, 1)",
-            hoverPaintStyle = { strokeStyle:"#7ec3d9" };
-
         // load initial components
         $.ajax({
             url:self.element.data('components-url'),
