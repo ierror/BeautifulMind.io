@@ -11,14 +11,14 @@
     padding-bottom: 5em;
     padding-right: .5em;
 
-        -moz-border-radius: 1.5em 1.5em 1.5em 1.5em;
+    -moz-border-radius: 1.5em 1.5em 1.5em 1.5em;
     border-radius: 1.5em 1.5em 1.5em 1.5em;
 
-        -moz-box-shadow:    0px 0px 0px 3px #ccc;
-        -webkit-box-shadow: 0px 0px 0px 3px #ccc;
+    -moz-box-shadow:    0px 0px 0px 3px #ccc;
+    -webkit-box-shadow: 0px 0px 0px 3px #ccc;
     box-shadow:         2px 2px 5px 2px #ccc;
 
-    border: 2px solid #4183c4;
+    border: 2px solid #6a6a6a;
     width: 100px;
     height: 10px;
     z-index: 20;
@@ -26,21 +26,20 @@
 }
 
 #mindmap-map .component-selected {
-    border-color: #778899;
+    border-color: #4183c4;
 }
 
 #mindmap-map .component-root {
-    background-color: #4183c4;
-    color: white;
+    border-width: 4px;
 }
 
 #mindmap-map .component .component-title {
     font-size: 12px;
-    line-height: 18px;
-    margin: 0;
     font-family: inherit;
-    font-weight: bold;
-    color: inherit;
+    line-height: 18px;
+    font-weight: bolder;
+    margin: 0;
+    color: #4183c4;
     text-rendering: optimizelegibility;
     text-align: center;
     height: 36px;

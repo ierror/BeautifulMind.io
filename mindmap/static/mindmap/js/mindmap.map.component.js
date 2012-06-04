@@ -198,15 +198,15 @@
             jsPlumb.connect({
                 source:parent,
                 target:self.element,
-                anchor:"AutoDefault",
+                anchor:'AutoDefault',
                 paintStyle:{
-                    lineWidth:0.5,
-                    strokeStyle:"gray",
-                    outlineWidth:1,
-                    outlineColor:"white"
+                    lineWidth:2,
+                    strokeStyle:'#4183c4',
+                    outlineWidth:0.5,
+                    outlineColor:'white'
                 },
-                endpoint:"Blank",
-                connector:[ "Bezier", { curviness:13 } ]
+                endpoint:'Blank',
+                connector:[ 'Bezier', { curviness:13 } ]
             });
         }
 
