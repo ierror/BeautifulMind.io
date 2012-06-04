@@ -3,7 +3,7 @@ from threading import Lock
 from sockjs.tornado import SockJSConnection
 from tornado.escape import json_decode, json_encode
 from .exceptions import HTTPException
-from .decorators import check_for_map_pk, check_for_component_pk, check_for_data
+from .decorators import check_for_data
 
 
 class MindmapWebSocketHandler(SockJSConnection):
@@ -16,29 +16,32 @@ class MindmapWebSocketHandler(SockJSConnection):
 
     def _broadcast_to_map(self, method, data={}):
         data['method'] = method
+        print '>>', self._maps_participants,
         self.broadcast(
             clients = [ maps_participant for maps_participant in self._maps_participants[data['map_pk']] if maps_participant != self ],
             message = json_encode(data)
         )
 
-    @check_for_map_pk()
+    @check_for_data('map_pk', force_int=True)
     def _register_myself_as_map_participant(self, data):
         self._lock.acquire()
         self._maps_participants.setdefault(data['map_pk'], set()).add(self)
         self._lock.release()
 
-    @check_for_map_pk()
-    @check_for_component_pk()
-    @check_for_data('pos')
+    @check_for_data('map_pk', 'component_pk', 'pos', force_int=True)
     def _update_component_pos(self, data):
         print data
         self._broadcast_to_map('update_component_pos', data)
 
-    @check_for_map_pk()
-    @check_for_data('offset_left', 'offset_top', 'except_component_pk')
+    @check_for_data('map_pk', 'component_pk', 'except_component_pk', 'offset_left', 'offset_top', force_int=True)
     def _add_components_offset_except_one(self, data):
-        print data
         self._broadcast_to_map('add_components_offset_except_one', data)
+
+    @check_for_data('pos', 'parent_pk', force_int=True)
+    @check_for_data('title')
+    def _add_component(self, data):
+        print data
+        self._broadcast_to_map('add_component', data)
 
     def on_message(self, data):
         try:
@@ -54,6 +57,7 @@ class MindmapWebSocketHandler(SockJSConnection):
            'register_myself_as_map_participant': self._register_myself_as_map_participant,
            'update_component_pos': self._update_component_pos,
            'add_components_offset_except_one': self._add_components_offset_except_one,
+           'add_component': self._add_component,
         }
 
         # call method
