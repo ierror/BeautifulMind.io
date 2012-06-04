@@ -44,23 +44,6 @@ def map_components(request, mindmap_pk):
         serializers.serialize('json', components or [], fields=('pk','title', 'pos_top', 'pos_left', 'level', 'parent'))
     ), 'application/json')
 
-
-def map_component_add(request, mindmap_pk):
-    mindmap = get_object_or_404(MindMap, pk=mindmap_pk)
-    if request.method == 'POST':
-        form = MindMapComponentForm(mindmap=mindmap, data=request.POST)
-        if form.is_valid():
-            form.save()
-    else:
-        form = MindMapComponentForm()
-
-    print form.errors
-
-    return render_to_response('mindmap/map_component_add.html',
-            { 'form': form },
-            context_instance=RequestContext(request))
-
-
 def map_component_update_pos(request, mindmap_pk, component_pk):
     component = get_object_or_404(MindMapComponent, pk=component_pk)
 
@@ -86,3 +69,4 @@ def map_components_add_offset(request, mindmap_pk):
         response_data = {'success' : True}
 
     return HttpResponse(simplejson.dumps(response_data), 'application/json')
+

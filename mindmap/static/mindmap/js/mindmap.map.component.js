@@ -36,6 +36,10 @@
         self.element.attr('data-component-pk', id);
     }
 
+    MindMapComponent.prototype.setParentId = function (id) {
+        this.element.attr('data-parent-component-pk', id);
+    }
+
     MindMapComponent.prototype.init = function (opts) {
         var self = this;
 
@@ -46,11 +50,14 @@
         // clone component from tpl
         self.element = $('#component-tpl').clone().css('display', 'block');
 
+        // add reverse
+        self.element.data('mindmapMapComponent', self);
+
         // set ids
-        self.setId(opts.pk)
+        self.setId(opts.pk);
 
         // write parent pk
-        self.element.attr('data-parent-component-pk', opts.parent_pk);
+        self.setParentId(opts.parent_pk);
 
         // title stuff
         var title = $('.component-title:first', self.element);
@@ -79,56 +86,6 @@
         // make compontent draggable
         jsPlumb.draggable(self.element, {
             scroll:true,
-            stop:function () {
-                var pos = self.element.position();
-
-                // send last pos to client
-                $.mindmapSockjs.send('update_component_pos', {
-                    map_pk:self.map_pk,
-                    component_pk:self.pk,
-                    pos_left:pos.left,
-                    pos_top:pos.top
-                });
-
-                // update last pos in db
-                var url = bm_globals.mindmap.map_component_update_pos_url.replace('#1#', self.map_pk).replace('#2#', self.pk);
-                $.ajax({
-                    url:url,
-                    type:'POST',
-                    data:{
-                        'pos_left':pos.left,
-                        'pos_top':pos.top
-                    },
-                    cache:false
-                });
-
-                // save crosshift offset
-                if (self._cross_shift_offset_total[0] || self._cross_shift_offset_total[1]) {
-                    var url = bm_globals.mindmap.map_components_add_offset.replace('#1#', self.map_pk);
-                    $.ajax({
-                        url:url,
-                        type:'POST',
-                        data:{
-                            'offset_left':self._cross_shift_offset_total[0],
-                            'offset_top':self._cross_shift_offset_total[1],
-                            'component_exclude_pk':self.pk
-                        },
-                        cache:false
-                    });
-                    self._cross_shift_offset_total = [0, 0];
-                }
-
-                // "flush" cross_shift_offset_current (send to client)
-                if (self._cross_shift_offset_current[0] || self._cross_shift_offset_current[1]) {
-                    $.mindmapSockjs.send('add_components_offset_except_one', {
-                        map_pk:self.map_pk,
-                        except_component_pk:self.pk,
-                        offset_left:self._cross_shift_offset_current[0],
-                        offset_top:self._cross_shift_offset_current[1]
-                    });
-                    self._cross_shift_offset_current = [0, 0];
-                }
-            },
             drag:function () {
                 var pos = self.element.position();
 
@@ -186,6 +143,56 @@
 
                     self._last_sent_dragg_pos = [pos.left, pos.top];
                 }
+            },
+            stop:function () {
+                var pos = self.element.position();
+
+                // send last pos to client
+                $.mindmapSockjs.send('update_component_pos', {
+                    map_pk:self.map_pk,
+                    component_pk:self.pk,
+                    pos_left:pos.left,
+                    pos_top:pos.top
+                });
+
+                // update last pos in db
+                var url = bm_globals.mindmap.map_component_update_pos_url.replace('#1#', self.map_pk).replace('#2#', self.pk);
+                $.ajax({
+                    url:url,
+                    type:'POST',
+                    data:{
+                        'pos_left':pos.left,
+                        'pos_top':pos.top
+                    },
+                    cache:false
+                });
+
+                // save crosshift offset
+                if (self._cross_shift_offset_total[0] || self._cross_shift_offset_total[1]) {
+                    var url = bm_globals.mindmap.map_components_add_offset.replace('#1#', self.map_pk);
+                    $.ajax({
+                        url:url,
+                        type:'POST',
+                        data:{
+                            'offset_left':self._cross_shift_offset_total[0],
+                            'offset_top':self._cross_shift_offset_total[1],
+                            'component_exclude_pk':self.pk
+                        },
+                        cache:false
+                    });
+                    self._cross_shift_offset_total = [0, 0];
+                }
+
+                // "flush" cross_shift_offset_current (send to client)
+                if (self._cross_shift_offset_current[0] || self._cross_shift_offset_current[1]) {
+                    $.mindmapSockjs.send('add_components_offset_except_one', {
+                        map_pk:self.map_pk,
+                        except_component_pk:self.pk,
+                        offset_left:self._cross_shift_offset_current[0],
+                        offset_top:self._cross_shift_offset_current[1]
+                    });
+                    self._cross_shift_offset_current = [0, 0];
+                }
             }
         });
 
@@ -200,10 +207,8 @@
                 target:self.element,
                 anchor:'AutoDefault',
                 paintStyle:{
-                    lineWidth:2,
-                    strokeStyle:'#4183c4',
-                    outlineWidth:0.5,
-                    outlineColor:'white'
+                    lineWidth:1.5,
+                    strokeStyle:'#4183c4'
                 },
                 endpoint:'Blank',
                 connector:[ 'Bezier', { curviness:13 } ]

@@ -19,10 +19,10 @@
         self.socket.onmessage = function(e) {
             var client_methods = {
                 'add_component': function(data) {
-                    data.left = data.pos.left;
-                    data.top = data.pos.top;
-                    $('#mindmap-map').mindmapMap('add_component', data);
-                    jsPlumb.repaint(component);
+                    data.left = data.pos_left;
+                    data.top = data.pos_top;
+                    data.pk = data.component_pk;
+                    $('#mindmap-map').data('mindmapMap').addComponent(data);
                 },
 
                 'update_component_pos': function(data) {

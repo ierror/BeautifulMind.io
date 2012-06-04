@@ -14,6 +14,7 @@ class MindmapWebSocketHandler(SockJSConnection):
     def _die(cls, *args, **kwargs):
         raise HTTPException(*args, **kwargs)
 
+
     def _broadcast_to_map(self, method, data={}):
         data['method'] = method
         self.broadcast(
@@ -21,24 +22,29 @@ class MindmapWebSocketHandler(SockJSConnection):
             message = json_encode(data)
         )
 
+
     @check_for_data('map_pk', force_int=True)
     def _register_myself_as_map_participant(self, data):
         self._lock.acquire()
         self._maps_participants.setdefault(data['map_pk'], set()).add(self)
         self._lock.release()
 
+
     @check_for_data('map_pk', 'component_pk', 'pos_left', 'pos_top', force_int=True)
     def _update_component_pos(self, data):
         self._broadcast_to_map('update_component_pos', data)
+
 
     @check_for_data('map_pk', 'except_component_pk', 'offset_left', 'offset_top', force_int=True)
     def _add_components_offset_except_one(self, data):
         self._broadcast_to_map('add_components_offset_except_one', data)
 
+
     @check_for_data('parent_pk', 'pos_left', 'pos_top', force_int=True)
     @check_for_data('title')
     def _add_component(self, data):
         self._broadcast_to_map('add_component', data)
+
 
     def on_message(self, data):
         try:
@@ -60,10 +66,10 @@ class MindmapWebSocketHandler(SockJSConnection):
         # call method
         try:
             method = methods.get(data['method'], None)
+            method(data)
         except TypeError:
             self._die('Unknown method "%s" called' % data['method'])
 
-        method(data)
 
     def on_close(self):
         for map_pk in self._maps_participants.keys():

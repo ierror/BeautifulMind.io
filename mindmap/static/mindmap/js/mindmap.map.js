@@ -14,7 +14,12 @@
 
     function MindMap(element, options) {
         var self = this;
+
         self.element = $(element);
+
+        // add reverse
+        self.element.data('mindmapMap', self);
+
         self.options = $.extend({}, defaults, options);
         self.pk = self.element.data('map-pk');
         self._defaults = defaults;
@@ -26,13 +31,15 @@
     MindMap.prototype.init = function () {
         var self = this;
 
+        console.log('init MindMap');
+
         jsPlumb.DefaultDragOptions = {
-            cursor:"pointer", zIndex:2000
+            cursor:'pointer', zIndex:2000
         };
 
         jsPlumb.importDefaults({
             DragOptions:{ cursor:'wait', zIndex:20 },
-            Connector:[ "Bezier", { curviness:25 } ]
+            Connector:[ 'Bezier', { curviness:25 } ]
         });
 
         // load initial components
@@ -85,7 +92,7 @@
                     title:'neu',
                     pos_left:pos_left,
                     pos_top:pos_top,
-                    parent:parent_component.attr('data-component-pk'),
+                    parent_pk:parent_component.attr('data-component-pk'),
                     do_collide_check:true,
                     type:type,
                     set_focus_on_title_field:true,
@@ -100,6 +107,8 @@
 
     MindMap.prototype.addComponent = function (data) {
         var self = this;
+
+        console.log(data.parent_pk);
 
         var component = $.mindmapMapComponent({
             pk:data.pk,
@@ -151,16 +160,19 @@
                     title:data.title,
                     pos_left:pos.left,
                     pos_top:pos.top,
-                    parent:data.parent                    },
+                    parent:data.parent_pk
+                },
                 cache:false,
                 success:function (response_data) {
                     component.setId(response_data.form.instance_pk);
-                    $.mindmapSockjs.send('addComponent', {
+
+                    $.mindmapSockjs.send('add_component', {
                         map_pk:self.pk,
                         title:data.title,
                         component_pk:response_data.form.instance_pk,
-                        pos:pos,
-                        parent_pk:data.parent
+                        pos_left:pos.left,
+                        pos_top:pos.top,
+                        parent_pk:data.parent_pk
                     });
                 },
                 error:function () {

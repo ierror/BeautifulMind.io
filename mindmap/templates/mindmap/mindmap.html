@@ -5,20 +5,12 @@
 {% block content %}
 <div id="mindmap-map" data-components-url="{% url mindmap_map_components mindmap.pk %}" data-map-pk="{{ mindmap.pk }}">
     <div class="component" id="component-tpl">
-        <input class="component-title" type="text" name="title">
-        <p>
-            <a href="#" class="btn btn-mini pull-right">
-                <i class="icon-remove"></i>
-            </a>
-            <a class="btn btn-mini pull-left btn-component-add">
-                <i class="icon-plus"></i>
-            </a>
-        </p>
+        <input class="component-title" type="text" name="title"/>
     </div>
 </div>
 
 <!-- add map component modal -->
-<div id="mindmap-component-new" class="modal modal-form hide" data-url="{% url mindmap_map_component_add mindmap.pk %}" data-title="{% trans 'Add Component' %}">
+<div id="mindmap-component-new" class="modal modal-form hide" data-url="{% url mindmap_map_component_add '#1#' '#2#' %}" data-title="{% trans 'Add Component' %}">
     <div class="modal-header">
         <button class="close" data-dismiss="modal">×</button>
         <h3></h3>
