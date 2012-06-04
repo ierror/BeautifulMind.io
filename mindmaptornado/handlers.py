@@ -16,7 +16,6 @@ class MindmapWebSocketHandler(SockJSConnection):
 
     def _broadcast_to_map(self, method, data={}):
         data['method'] = method
-        print '>>', self._maps_participants,
         self.broadcast(
             clients = [ maps_participant for maps_participant in self._maps_participants[data['map_pk']] if maps_participant != self ],
             message = json_encode(data)
@@ -28,19 +27,17 @@ class MindmapWebSocketHandler(SockJSConnection):
         self._maps_participants.setdefault(data['map_pk'], set()).add(self)
         self._lock.release()
 
-    @check_for_data('map_pk', 'component_pk', 'pos', force_int=True)
+    @check_for_data('map_pk', 'component_pk', 'pos_left', 'pos_top', force_int=True)
     def _update_component_pos(self, data):
-        print data
         self._broadcast_to_map('update_component_pos', data)
 
-    @check_for_data('map_pk', 'component_pk', 'except_component_pk', 'offset_left', 'offset_top', force_int=True)
+    @check_for_data('map_pk', 'except_component_pk', 'offset_left', 'offset_top', force_int=True)
     def _add_components_offset_except_one(self, data):
         self._broadcast_to_map('add_components_offset_except_one', data)
 
-    @check_for_data('pos', 'parent_pk', force_int=True)
+    @check_for_data('parent_pk', 'pos_left', 'pos_top', force_int=True)
     @check_for_data('title')
     def _add_component(self, data):
-        print data
         self._broadcast_to_map('add_component', data)
 
     def on_message(self, data):

@@ -86,7 +86,8 @@
                 $.mindmapSockjs.send('update_component_pos', {
                     map_pk:self.map_pk,
                     component_pk:self.pk,
-                    pos:pos
+                    pos_left:pos.left,
+                    pos_top:pos.top
                 });
 
                 // update last pos in db
@@ -179,7 +180,8 @@
                     $.mindmapSockjs.send('update_component_pos', {
                         map_pk:self.map_pk,
                         component_pk:self.pk,
-                        pos:pos
+                        pos_left:pos.left,
+                        pos_top:pos.top
                     });
 
                     self._last_sent_dragg_pos = [pos.left, pos.top];

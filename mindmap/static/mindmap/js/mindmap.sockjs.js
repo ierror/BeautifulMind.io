@@ -21,13 +21,13 @@
                 'add_component': function(data) {
                     data.left = data.pos.left;
                     data.top = data.pos.top;
-                    $('#mindmap-map').add_component(data);
+                    $('#mindmap-map').mindmapMap('add_component', data);
                     jsPlumb.repaint(component);
                 },
 
                 'update_component_pos': function(data) {
                     var component = $('.component[data-component-pk="'+data.component_pk+'"]:first');
-                    component.css({left: data.pos.left, top: data.pos.top});
+                    component.css({left: data.pos_left, top: data.pos_top});
                     jsPlumb.repaint(component);
                 },
 
