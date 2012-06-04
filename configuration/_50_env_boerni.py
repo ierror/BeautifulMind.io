@@ -20,4 +20,5 @@ if not settings.DEBUG:
 
 COMPRESS_ENABLED = False
 
-MINDMAPTORNADO_SERVER = 'http://localhost:1234/echo'
+MINDMAPTORNADO_BIND_PORT = 1234
+MINDMAPTORNADO_SERVER = 'http://localhost:%d/echo' % (MINDMAPTORNADO_BIND_PORT)
