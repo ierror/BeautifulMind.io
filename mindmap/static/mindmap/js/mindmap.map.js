@@ -9,7 +9,8 @@
 (function ($, window, document, undefined) {
     var version = '0.1',
         defaults = {
-            component_spacing:20
+            component_spacing: {left: 40, top: 15},
+            topbar_height:40 + 5 // height + 5 px spacing
         };
 
     function MindMap(element, options) {
@@ -30,17 +31,6 @@
 
     MindMap.prototype.init = function () {
         var self = this;
-
-        console.log('init MindMap');
-
-        jsPlumb.DefaultDragOptions = {
-            cursor:'pointer', zIndex:2000
-        };
-
-        jsPlumb.importDefaults({
-            DragOptions:{ cursor:'wait', zIndex:20 },
-            Connector:[ 'Bezier', { curviness:25 } ]
-        });
 
         // load initial components
         $.ajax({
@@ -70,19 +60,31 @@
             $('.component-title-input:hidden', self.element).blur();
 
             if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab key
-                var parent_component = $('.component-selected:first', self.element);
+
+                // determine parent
+                var parent_component;
+                if (e.keyCode == 13) { // enter => child
+                    parent_component = $('#'+$('.component-selected:first', self.element)
+                                       .data('mindmapMapComponent')
+                                       .getDomId($('.component-selected:first', self.element)
+                                       .attr('data-parent-component-pk')));
+
+                } else { // tab => sibling
+                    parent_component = $('.component-selected:first', self.element);
+                }
+
                 if (!parent_component.length) return true;
 
                 var parent_component_pos = parent_component.position();
                 var pos_left, pos_top, type;
 
-                if (e.keyCode == 13) { // enter => sibling
-                    type = 'sibling';
-                    pos_left = parent_component_pos.left;
-                    pos_top = parent_component_pos.top + parent_component.outerHeight() + self.options.component_spacing;
-                } else { // tab => child
+                if (e.keyCode == 13) {
                     type = 'child';
-                    pos_left = parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing;
+                    pos_left = parent_component_pos.left;
+                    pos_top = parent_component_pos.top;
+                } else {
+                    type = 'sibling';
+                    pos_left = parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing.left;
                     pos_top = parent_component_pos.top;
                 }
 
@@ -108,8 +110,6 @@
     MindMap.prototype.addComponent = function (data) {
         var self = this;
 
-        console.log(data.parent_pk);
-
         var component = $.mindmapMapComponent({
             pk:data.pk,
             container:self.element,
@@ -126,28 +126,67 @@
         }
 
         if (data.do_collide_check) {
-            while (true) {
-                var disrupters = component.element.collidesWith('.component');
-                if (disrupters.length > 0) {
-                    var disrupter = $(disrupters[0]);
-                    var disrupters_pos = disrupter.position();
+            var parent_component = component.element.data('mindmapMapComponent').getParent();
+            var parent_component_pos = parent_component.position();
+            var component_pos = component.element.position();
+            var offset = {left:0, top:component_pos.top};
+            var fill_space_on_top = true;
 
-                    if (data.type == 'child') {
-                        component.element.css({
-                            left:disrupter.outerWidth() + disrupters_pos.left + self.component_spacing
-                        });
-                    } else {
-                        component.element.css({
-                            top:disrupter.outerHeight() + disrupters_pos.top + self.component_spacing
-                        });
+            while (true) {
+                if (data.type == 'child') { // child
+                    component.element.css({
+                        left:parent_component.left,
+                        top:offset.top
+                    });
+
+                    // check if component overlaps navbar, if so fill space on bottom of parent
+                    var overlaps_navbar = component.element.position().top-self.options.topbar_height < 0;
+                    if (overlaps_navbar) {
+                        fill_space_on_top = false;
+                        offset.top = parent_component_pos.top;
+                        continue;
                     }
-                } else {
-                    break;
+
+                    var colliders = component.collidesWith();
+                    var collider = $(colliders[0]);
+                    if (colliders.length > 0 || overlaps_navbar) {
+                        if (fill_space_on_top)
+                            offset.top = collider.position().top - collider.outerHeight() - self.options.component_spacing.top
+                        else
+                            offset.top = collider.position().top + collider.outerHeight() + self.options.component_spacing.top
+
+                    } else {
+                        break;
+                    }
+
+                } else { // sibling
+                    component.element.css({
+                        left:parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing.left + offset.left,
+                        top:offset.top
+                    });
+
+                    // check if component overlaps navbar, if so fill space on bottom of parent
+                    var overlaps_navbar = component.element.position().top-self.options.topbar_height < 0;
+                    if (overlaps_navbar) {
+                        fill_space_on_top = false;
+                        offset.top = parent_component_pos.top;
+                        continue;
+                    }
+
+                    var colliders = component.collidesWith();
+                    var collider = $(colliders[0]);
+                    if (colliders.length > 0 || overlaps_navbar) {
+                        if (fill_space_on_top)
+                            offset.top = collider.position().top - collider.outerHeight() - self.options.component_spacing.top
+                        else
+                            offset.top = collider.position().top + collider.outerHeight() + self.options.component_spacing.top
+
+                    } else {
+                        break;
+                    }
                 }
             }
         }
-
-        jsPlumb.repaint(component.element);
 
         if (data.save) {
             var pos = component.element.position();
@@ -165,6 +204,7 @@
                 cache:false,
                 success:function (response_data) {
                     component.setId(response_data.form.instance_pk);
+                    component.addConnector();
 
                     $.mindmapSockjs.send('add_component', {
                         map_pk:self.pk,
@@ -179,6 +219,8 @@
                     component.element.remove();
                 }
             });
+        } else {
+            component.addConnector();
         }
 
         return component;

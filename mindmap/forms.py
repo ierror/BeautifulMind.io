@@ -8,6 +8,9 @@ class MindMapForm(forms.ModelForm):
         model = MindMap
         fields = ('name',)
 
+    root_component_pos_left = forms.IntegerField(widget=forms.HiddenInput)
+    root_component_pos_top = forms.IntegerField(widget=forms.HiddenInput)
+
 
 class MindMapComponentForm(forms.ModelForm):
     class Meta:
@@ -15,8 +18,8 @@ class MindMapComponentForm(forms.ModelForm):
         fields = ('title', 'parent', 'pos_left', 'pos_top')
 
     parent = forms.ModelChoiceField(queryset=MindMapComponent.objects.none(), widget=forms.HiddenInput)
-    pos_left = forms.CharField(widget=forms.HiddenInput)
-    pos_top = forms.CharField(widget=forms.HiddenInput)
+    pos_left = forms.IntegerField(widget=forms.HiddenInput)
+    pos_top = forms.IntegerField(widget=forms.HiddenInput)
 
     def __init__(self, mindmap=None, *args, **kwargs):
         super(MindMapComponentForm, self).__init__(*args, **kwargs)

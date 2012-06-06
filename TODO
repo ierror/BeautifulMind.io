@@ -10,6 +10,7 @@ TODO
 
 ## Deployment
 * use memcache
+* pgbouncer
 
 ## Doc
 * create cache Table ./manage.py createcachetable cache

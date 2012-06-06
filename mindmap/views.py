@@ -28,7 +28,10 @@ def map_new(request):
     if request.method == 'POST':
         form = MindMapForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            root_component = form.save().root_component
+            root_component.pos_left = form.cleaned_data['root_component_pos_left']
+            root_component.pos_top = form.cleaned_data['root_component_pos_top']
+            root_component.save()
     else:
         form = MindMapForm()
 
