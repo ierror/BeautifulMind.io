@@ -206,7 +206,7 @@
                 },
                 cache:false,
                 success:function (response_data) {
-                    $.scrollTo(component.element, {offset: {left:0, top:self.options.topbar_height*-1}});
+                    $.scrollTo(component.element, {offset: {left:0, top:self.options.topbar_height}});
 
                     // animate
                     var bg_color_origin = component.element.css('background-color');
