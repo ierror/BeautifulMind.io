@@ -9,7 +9,7 @@
 (function ($, window, document, undefined) {
     var version = '0.1',
         defaults = {
-            component_spacing: {left: 40, top: 15},
+            component_spacing:{left:40, top:15},
             topbar_height:40 + 5 // height + 5 px spacing
         };
 
@@ -64,10 +64,10 @@
                 // determine parent
                 var parent_component;
                 if (e.keyCode == 13) { // enter => child
-                    parent_component = $('#'+$('.component-selected:first', self.element)
-                                       .data('mindmapMapComponent')
-                                       .getDomId($('.component-selected:first', self.element)
-                                       .attr('data-parent-component-pk')));
+                    parent_component = $('#' + $('.component-selected:first', self.element)
+                        .data('mindmapMapComponent')
+                        .getDomId($('.component-selected:first', self.element)
+                        .attr('data-parent-component-pk')));
 
                 } else { // tab => sibling
                     parent_component = $('.component-selected:first', self.element);
@@ -140,7 +140,7 @@
                     });
 
                     // check if component overlaps navbar, if so fill space on bottom of parent
-                    var overlaps_navbar = component.element.position().top-self.options.topbar_height < 0;
+                    var overlaps_navbar = component.element.position().top - self.options.topbar_height < 0;
                     if (overlaps_navbar) {
                         fill_space_on_top = false;
                         offset.top = parent_component_pos.top;
@@ -166,7 +166,7 @@
                     });
 
                     // check if component overlaps navbar, if so fill space on bottom of parent
-                    var overlaps_navbar = component.element.position().top-self.options.topbar_height < 0;
+                    var overlaps_navbar = component.element.position().top - self.options.topbar_height < 0;
                     if (overlaps_navbar) {
                         fill_space_on_top = false;
                         offset.top = parent_component_pos.top;
@@ -186,6 +186,9 @@
                     }
                 }
             }
+
+
+            //component.element.animate({backgroundColor: '#FF0000'}, 'slow');
         }
 
         if (data.save) {
@@ -203,6 +206,13 @@
                 },
                 cache:false,
                 success:function (response_data) {
+                    $.scrollTo(component.element, {offset: {left:0, top:self.options.topbar_height*-1}});
+
+                    // animate
+                    var bg_color_origin = component.element.css('background-color');
+                    component.element.css('background-color', '#4183c4');
+                    component.element.animate({'background-color': bg_color_origin}, 1000);
+
                     component.setId(response_data.form.instance_pk);
                     component.addConnector();
 
