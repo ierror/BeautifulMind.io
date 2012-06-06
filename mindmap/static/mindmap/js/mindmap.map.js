@@ -186,9 +186,6 @@
                     }
                 }
             }
-
-
-            //component.element.animate({backgroundColor: '#FF0000'}, 'slow');
         }
 
         if (data.save) {
