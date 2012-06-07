@@ -67,3 +67,14 @@ def map_components_add_offset(request, mindmap_pk):
 
     return HttpResponse(simplejson.dumps(response_data), 'application/json')
 
+
+def map_component_update_title(request, mindmap_pk, component_pk):
+    component = get_object_or_404(MindMapComponent, pk=component_pk)
+
+    response_data = {'success' : False}
+    if request.method == 'POST' and 'title' in request.POST:
+        component.title = request.POST['title']
+        component.save()
+        response_data = {'success' : True}
+
+    return HttpResponse(simplejson.dumps(response_data), 'application/json')

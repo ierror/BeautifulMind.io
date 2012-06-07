@@ -15,11 +15,6 @@ class MapComponentAddView(CreateView, JSONResponseMixin):
         kwargs['mindmap'] = get_object_or_404(MindMap, pk=self.kwargs['mindmap_pk'])
         return kwargs
 
-    def get_form(self, form_class):
-        form = super(MapComponentAddView, self).get_form(form_class)
-        form.instance.user = self.request.user
-        return form
-
     def form_valid(self, form):
         form.save()
         context_data = super(MapComponentAddView, self).get_context_data()

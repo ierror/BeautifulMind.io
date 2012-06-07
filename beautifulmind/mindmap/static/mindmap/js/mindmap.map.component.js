@@ -52,15 +52,44 @@
         self.parent_pk = opts.parent_pk;
 
         // title stuff
-        var title = $('.component-title:first', self.element);
-        title.attr('value', opts.title);
-        title.on('click', function () {
-            title.focus();
-            title.on('keydown', function (e) {
-                if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab
-                    title.blur();
-                    return false;
-                }
+        var title_input = $('.component-title:first', self.element);
+        title_input.data('last-value', opts.title);
+        title_input.attr('value', opts.title);
+        title_input.on('keydown', function (e) {
+            if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab
+                title_input.blur();
+                return false;
+            }
+        });
+
+        title_input.on('blur', function () {
+            var title = title_input.attr('value');
+
+            // update / propagate title only if changed
+            if (title_input.data('last-value') == title) {
+                return;
+            }
+
+            // update title
+            var url = bm_globals.mindmap.map_component_update_title_url.replace('#1#', self.map_pk).replace('#2#', self.pk);
+            $.ajax({
+                url:url,
+                type:'POST',
+                data:{
+                    'title':title
+                },
+                success: function() {
+                    // propagate title to clients
+                    $.mindmapSockjs.send('update_component_title', {
+                        map_pk:self.map_pk,
+                        component_pk:self.pk,
+                        title:title
+                    });
+
+                    // save last saved value
+                    title_input.data('last-value', title);
+                },
+                cache:false
             });
         });
 

@@ -91,7 +91,7 @@
                  // add tmp pk, save will replace it by created db component pk
                  var component = self.addComponent({
                      pk:'tmp-' + parseInt(Math.random() * 1000000).toString(),
-                     title:'neu',
+                     title:'Title',
                      pos_left:pos_left,
                      pos_top:pos_top,
                      parent_pk:parent_component.attr('data-component-pk'),
@@ -122,7 +122,9 @@
 
         // set focus on title input
         if (data.set_focus_on_title_field) {
-            $('.component-title:first', component.element).focus();
+            var input = $('.component-title:first', component.element);
+            input.attr('value', '');
+            input.focus();
         }
 
         if (data.do_collide_check) {

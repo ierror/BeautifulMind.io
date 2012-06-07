@@ -35,6 +35,11 @@ class MindmapWebSocketHandler(SockJSConnection):
         self._broadcast_to_map('update_component_pos', data)
 
 
+    @check_for_data('map_pk', 'component_pk', force_int=True)
+    @check_for_data('title')
+    def _update_component_title(self, data):
+        self._broadcast_to_map('update_component_title', data)
+
     @check_for_data('map_pk', 'except_component_pk', 'offset_left', 'offset_top', force_int=True)
     def _add_components_offset_except_one(self, data):
         self._broadcast_to_map('add_components_offset_except_one', data)
@@ -59,6 +64,7 @@ class MindmapWebSocketHandler(SockJSConnection):
         methods = {
            'register_myself_as_map_participant': self._register_myself_as_map_participant,
            'update_component_pos': self._update_component_pos,
+           'update_component_title': self._update_component_title,
            'add_components_offset_except_one': self._add_components_offset_except_one,
            'add_component': self._add_component,
         }

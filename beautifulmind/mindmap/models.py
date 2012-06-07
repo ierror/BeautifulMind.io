@@ -8,7 +8,7 @@ from mptt.models import MPTTModel
 
 
 class MindMapComponent(MPTTModel):
-    title = models.CharField(verbose_name=_('Title'), max_length=255)
+    title = models.CharField(verbose_name=_('Title'), max_length=255, null=True)
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     pos_top = models.IntegerField(blank=True, null=True)
     pos_left = models.IntegerField(blank=True, null=True)

@@ -31,6 +31,11 @@
                     jsPlumb.repaint(component);
                 },
 
+                'update_component_title': function(data) {
+                    var component = $('.component[data-component-pk="'+data.component_pk+'"]:first');
+                    $('.component-title:first', component).attr('value', data.title);
+                },
+
                 'add_components_offset_except_one': function(data) {
                     $('.component:not([data-component-pk="'+data.except_component_pk+'"])').each(function(){
                         var component = $(this);
