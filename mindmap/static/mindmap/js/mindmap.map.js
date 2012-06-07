@@ -227,6 +227,10 @@
                 }
             });
         } else {
+            // animate
+            var bg_color_origin = component.element.css('background-color');
+            component.element.css('background-color', '#4183c4');
+            component.element.animate({'background-color': bg_color_origin}, 1000);
             component.addConnector();
         }
 

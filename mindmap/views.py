@@ -9,12 +9,6 @@ from .models import MindMap, MindMapComponent
 from .forms import MindMapForm, MindMapComponentForm
 
 
-def index(request):
-    return render_to_response('mindmap/mindmap.html',
-            {},
-            context_instance=RequestContext(request))
-
-
 def map_show(request, mindmap_slug):
     mindmap = get_object_or_404(MindMap, slug=mindmap_slug)
     return render_to_response('mindmap/mindmap.html',

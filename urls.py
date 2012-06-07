@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
+from django.views.generic.base import TemplateView
 
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'BeautifulMind.views.home', name='home'),
+    url(r'^$', TemplateView.as_view(template_name='startpage.html')),
+
     url(r'^', include('beautifulmind.mindmap.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

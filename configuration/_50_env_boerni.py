@@ -13,12 +13,12 @@ DATABASES = {
     }
 }
 
-MEDIA_URL = 'http://192.168.100.200:8000/assets/'
+MEDIA_URL = 'http://localhost:8000/assets/'
 
 if not settings.DEBUG:
-    STATIC_URL = 'http://192.168.100.200:8000/assets/static/'
+    STATIC_URL = 'http://localhost:8000/assets/static/'
 
 COMPRESS_ENABLED = False
 
 MINDMAPTORNADO_BIND_PORT = 1234
-MINDMAPTORNADO_SERVER = 'http://192.168.100.200:%d/echo' % (MINDMAPTORNADO_BIND_PORT)
+MINDMAPTORNADO_SERVER = 'http://localhost:%d/echo' % (MINDMAPTORNADO_BIND_PORT)

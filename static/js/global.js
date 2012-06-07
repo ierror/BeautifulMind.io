@@ -1,6 +1,8 @@
 $(document).ready(function(){
     $('.modal-form').modalForm();
 
+    $('.simple-tooltip').tooltip();
+
     // make django csrf workable with ajax posts
     $.ajaxSetup({
         beforeSend:function (xhr, settings) {
