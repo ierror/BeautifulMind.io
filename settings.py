@@ -137,7 +137,6 @@ INSTALLED_APPS = (
     'django_extensions',
     'south',
     'compressor',
-    'gunicorn',
     'bootstrapform',
 )
 
