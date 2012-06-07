@@ -284,6 +284,10 @@
         self.element.toggleClass('component-selected');
     }
 
+    MindMapComponent.prototype.deselect = function() {
+        this.element.removeClass('component-selected');
+    }
+
     MindMapComponent.prototype.getComponentsExceptMyself = function () {
         return $('.component:not(#' + this.getDomId(this.pk) + ')', this.map);
     }
