@@ -3,9 +3,9 @@
 {% block title %}{{ mindmap.name }}{% endblock %}
 
 {% block content %}
-<div id="mindmap-map" data-components-url="{% url mindmap_map_components mindmap.pk %}" data-map-pk="{{ mindmap.pk }}">
-    <div class="component" id="component-tpl">
-        <input class="component-title" type="text" name="title">
+<div id="mindmap-map" data-components-url="{% url mindmap_map_components mindmap.pk %}" data-map-pk="{{ mindmap.pk }}" tabindex="0">
+    <div class="component input-prepend input-append" id="component-tpl">
+        <input class="input-small component-title" id="appendedPrependedInput" size="16" type="text">
     </div>
 </div>
 

@@ -54,6 +54,57 @@
 
             }
         });
+
+        $(document).on('keydown', function (e) {
+             // remove focus from input fields
+             $('.component-title-input:hidden', self.element).blur();
+
+             if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab key
+
+                 // determine parent
+                 var parent_component;
+                 if (e.keyCode == 13) { // enter => child
+                     parent_component = $('#' + $('.component-selected:first', self.element)
+                         .data('mindmapMapComponent')
+                         .getDomId($('.component-selected:first', self.element)
+                         .attr('data-parent-component-pk')));
+
+                 } else { // tab => sibling
+                     parent_component = $('.component-selected:first', self.element);
+                 }
+
+                 if (!parent_component.length) return true;
+
+                 var parent_component_pos = parent_component.position();
+                 var pos_left, pos_top, type;
+
+                 if (e.keyCode == 13) {
+                     type = 'child';
+                     pos_left = parent_component_pos.left;
+                     pos_top = parent_component_pos.top;
+                 } else {
+                     type = 'sibling';
+                     pos_left = parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing.left;
+                     pos_top = parent_component_pos.top;
+                 }
+
+                 // add tmp pk, save will replace it by created db component pk
+                 var component = self.addComponent({
+                     pk:'tmp-' + parseInt(Math.random() * 1000000).toString(),
+                     title:'neu',
+                     pos_left:pos_left,
+                     pos_top:pos_top,
+                     parent_pk:parent_component.attr('data-component-pk'),
+                     do_collide_check:true,
+                     type:type,
+                     set_focus_on_title_field:true,
+                     save:true
+                 });
+
+                 component.toggleSelect();
+                 return false;
+             }
+         });
     };
 
     MindMap.prototype.addComponent = function (data) {
