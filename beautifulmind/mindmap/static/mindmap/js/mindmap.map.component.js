@@ -242,7 +242,7 @@
                     outlineColor:'#4183c4'
                 },
                 endpoint:'Blank',
-                connector:[ 'Bezier', { curviness:20 } ]
+                connector:[ 'Bezier', { curviness:25 } ]
             });
         }
     }

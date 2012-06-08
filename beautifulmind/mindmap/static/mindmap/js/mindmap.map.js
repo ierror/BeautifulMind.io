@@ -70,13 +70,13 @@
 
                  // determine parent
                  var parent_component;
-                 if (e.keyCode == 13) { // enter => child
+                 if (e.keyCode == 13) { // enter => sibling
                      parent_component = $('#' + $('.component-selected:first', self.element)
                          .data('mindmapMapComponent')
                          .getDomId($('.component-selected:first', self.element)
                          .attr('data-parent-component-pk')));
 
-                 } else { // tab => sibling
+                 } else { // tab => child
                      parent_component = $('.component-selected:first', self.element);
                  }
 
@@ -86,11 +86,11 @@
                  var pos_left, pos_top, type;
 
                  if (e.keyCode == 13) {
-                     type = 'child';
+                     type = 'sibling';
                      pos_left = parent_component_pos.left;
                      pos_top = parent_component_pos.top;
                  } else {
-                     type = 'sibling';
+                     type = 'child';
                      pos_left = parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing.left;
                      pos_top = parent_component_pos.top;
                  }
