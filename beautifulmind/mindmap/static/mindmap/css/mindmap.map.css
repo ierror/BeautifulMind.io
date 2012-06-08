@@ -3,8 +3,8 @@
     filter: alpha(opacity = 80);
     background-color: white;
     color: black;
-    -moz-border-radius: 4px 4px 4px 4px;
-    border-radius: 4px 4px 4px 4px;
+    -moz-border-radius: 8px 8px 8px 8px;
+    border-radius: 12px 12px 12px 12px;
 
     -moz-box-shadow: 1px 1px 1px 1px #ccc;
     -webkit-box-shadow: 1px 1px 1px 1px #ccc;
@@ -17,7 +17,7 @@
     position: absolute;
     cursor: move;
     text-align: center;
-    padding-top: 3px;
+    padding-top: 4px;
 }
 
 #mindmap-map .component-selected {

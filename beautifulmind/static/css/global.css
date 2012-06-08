@@ -2,8 +2,12 @@ body {
   padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 }
 
-.brand-dot {
+.navbar .brand-dot {
     color: #4183c4;
+}
+
+.navbar .navbar-label-container {
+    padding-top: 13px;
 }
 
 #component-tpl {

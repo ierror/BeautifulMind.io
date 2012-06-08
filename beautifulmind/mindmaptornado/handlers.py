@@ -14,42 +14,53 @@ class MindmapWebSocketHandler(SockJSConnection):
     def _die(cls, *args, **kwargs):
         raise HTTPException(*args, **kwargs)
 
-
-    def _broadcast_to_map(self, method, data={}):
+    def _broadcast_to_map(self, method, data={}, send_to_myself=False):
         data['method'] = method
         self.broadcast(
-            clients = [ maps_participant for maps_participant in self._maps_participants[data['map_pk']] if maps_participant != self ],
+            clients = [ maps_participant for maps_participant in self._get_map_participants(data['map_pk']) if maps_participant != self or send_to_myself ],
             message = json_encode(data)
         )
 
+    def _get_map_participants(self, map_pk):
+        return self._maps_participants.get(map_pk, [])
+
+    def _get_map_participants_count(self, map_pk):
+        return len(self._maps_participants.get(map_pk, []))
+
+    def _braodcast_map_participants_count(self, map_pk):
+        # broadcast current map participants count
+        self._broadcast_to_map(
+            'update_map_participants_count',
+            data={
+                'map_pk': map_pk,
+                'map_participants_count': self._get_map_participants_count(map_pk)
+            },
+            send_to_myself=True
+        )
 
     @check_for_data('map_pk', force_int=True)
     def _register_myself_as_map_participant(self, data):
         self._lock.acquire()
         self._maps_participants.setdefault(data['map_pk'], set()).add(self)
         self._lock.release()
-
+        self._braodcast_map_participants_count(data['map_pk'])
 
     @check_for_data('map_pk', 'component_pk', 'pos_left', 'pos_top', force_int=True)
     def _update_component_pos(self, data):
         self._broadcast_to_map('update_component_pos', data)
 
-
     @check_for_data('map_pk', 'component_pk', force_int=True)
     @check_for_data('title')
     def _update_component_title(self, data):
         self._broadcast_to_map('update_component_title', data)
-
     @check_for_data('map_pk', 'except_component_pk', 'offset_left', 'offset_top', force_int=True)
     def _add_components_offset_except_one(self, data):
         self._broadcast_to_map('add_components_offset_except_one', data)
-
 
     @check_for_data('parent_pk', 'pos_left', 'pos_top', force_int=True)
     @check_for_data('title')
     def _add_component(self, data):
         self._broadcast_to_map('add_component', data)
-
 
     def on_message(self, data):
         try:
@@ -76,7 +87,6 @@ class MindmapWebSocketHandler(SockJSConnection):
         except TypeError:
             self._die('Unknown method "%s" called' % data['method'])
 
-
     def on_close(self):
         for map_pk in self._maps_participants.keys():
             if self in self._maps_participants.get(map_pk, []):
@@ -96,3 +106,5 @@ class MindmapWebSocketHandler(SockJSConnection):
                     pass
 
                 self._lock.release()
+
+                self._braodcast_map_participants_count(map_pk)

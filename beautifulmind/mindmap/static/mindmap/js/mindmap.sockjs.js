@@ -47,6 +47,10 @@
                         });
                     });
                     jsPlumb.repaintEverything();
+                },
+
+                'update_map_participants_count': function(data) {
+                    $('#mindmap-map').data('mindmapMap').updateParticipantsCount(data.map_participants_count);
                 }
             }
 
@@ -66,7 +70,7 @@
 
         self.send = function(method, data) {
             data.method = method;
-            self.socket.send(JSON.stringify(data))
+            self.socket.send(JSON.stringify(data));
         };
 
         return self;

@@ -1,0 +1,22 @@
+{% load i18n %}<div id="navbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav">
+                <li><a class="brand" href="/">{% include 'includes/brand.html' %}</a></li>
+                <li class="divider-vertical"></li>
+                <li class="navbar-label-container">
+                    <span class='label label-success' title="{% trans 'Number of participants' %}">
+                        <i class='icon-user icon-white'></i> <span id="mindmap-map-participants-count">0</span>
+                    </span>
+                </li>
+            </ul>
+
+            <div class="btn-group pull-right">
+                <a class="btn btn-small btn-info pull-right" data-toggle="modal" href="#mindmap-new">
+                    <i class="icon-plus-sign icon-white"></i> Map
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

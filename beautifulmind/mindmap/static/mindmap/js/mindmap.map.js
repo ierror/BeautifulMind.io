@@ -242,6 +242,10 @@
         return component;
     };
 
+    MindMap.prototype.updateParticipantsCount = function (count) {
+        $('#mindmap-map-participants-count').html(count);
+    };
+
     $.fn.mindmapMap = function (options) {
         return this.each(function () {
             if (!$.data(this, 'plugin_mindmapMap')) {
