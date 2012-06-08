@@ -2,6 +2,15 @@
 
 {% block title %}{{ mindmap.name }}{% endblock %}
 
+{% block navbar_sub %}
+        <li class="divider-vertical"></li>
+        <li class="navbar-label-container">
+            <span class='label label-success' title="{% trans 'Number of participants' %}">
+                <i class='icon-user icon-white'></i> <span id="mindmap-map-participants-count">0</span>
+            </span>
+        </li>
+{% endblock %}
+
 {% block content %}
 <div id="mindmap-map" data-components-url="{% url mindmap_map_components mindmap.pk %}" data-map-pk="{{ mindmap.pk }}" tabindex="0">
     <div class="component" id="component-tpl">
