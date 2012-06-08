@@ -117,7 +117,8 @@
             left:data.pos_left,
             top:data.pos_top,
             parent_pk:data.parent_pk,
-            level:data.level
+            level:data.level,
+            animate:data.animate
         });
 
         // set focus on title input
@@ -229,10 +230,12 @@
                 }
             });
         } else {
-            // animate
-            var bg_color_origin = component.element.css('background-color');
-            component.element.css('background-color', '#4183c4');
-            component.element.animate({'background-color': bg_color_origin}, 1000);
+            if (data.animate) {
+                var bg_color_origin = component.element.css('background-color');
+                component.element.css('background-color', '#4183c4');
+                component.element.animate({'background-color': bg_color_origin}, 1000);
+            }
+
             component.addConnector();
         }
 

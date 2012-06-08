@@ -22,6 +22,7 @@
                     data.left = data.pos_left;
                     data.top = data.pos_top;
                     data.pk = data.component_pk;
+                    data.animate = true;
                     $('#mindmap-map').data('mindmapMap').addComponent(data);
                 },
 
