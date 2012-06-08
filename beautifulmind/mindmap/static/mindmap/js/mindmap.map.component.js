@@ -220,14 +220,6 @@
         // append component to map container
         opts.container.append(self.element);
 
-        self.element.on('click', '.btn-component-add', function () {
-            var modal = $('#mindmap-component-new');
-            modal.modal('show');
-            $('#id_parent', modal).attr('value', self.element.data('data-component-pk') || '');
-            $('#id_pos_left', modal).attr('value', 250);
-            $('#id_pos_top', modal).attr('value', 90);
-        });
-
         self.element.on('click', function () {
             self.toggleSelect();
         });
