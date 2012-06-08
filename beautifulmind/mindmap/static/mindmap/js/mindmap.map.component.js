@@ -55,7 +55,7 @@
         var title_input = $('.component-title:first', self.element);
         title_input.data('last-value', opts.title);
         title_input.attr('value', opts.title);
-        title_input.on('keydown', function (e) {
+        title_input.on('keyup', function (e) {
             if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab
                 title_input.blur();
                 return false;

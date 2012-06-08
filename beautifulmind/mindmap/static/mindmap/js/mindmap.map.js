@@ -56,6 +56,13 @@
         });
 
         $(document).on('keydown', function (e) {
+            // disable tab press key on page
+            if (e.keyCode == 9) {
+                return false;
+            }
+        });
+
+        $(document).on('keyup', function (e) {
              // remove focus from input fields
              $('.component-title-input:hidden', self.element).blur();
 
