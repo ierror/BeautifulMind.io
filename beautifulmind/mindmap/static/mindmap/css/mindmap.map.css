@@ -3,12 +3,12 @@
     filter: alpha(opacity = 80);
     background-color: white;
     color: black;
-    -moz-border-radius: 1em 1em 1em 1em;
-    border-radius: 1em 1em 1em 1em;
+    -moz-border-radius: 4px 4px 4px 4px;
+    border-radius: 4px 4px 4px 4px;
 
-    -moz-box-shadow: 0.1em 0.1em 0.1em 0.1em #ccc;
-    -webkit-box-shadow: 0.1em 0.1em 0.1em 0.1em #ccc;
-    box-shadow: 0.1em 0.1em 0.1em 0.1em #ccc;
+    -moz-box-shadow: 1px 1px 1px 1px #ccc;
+    -webkit-box-shadow: 1px 1px 1px 1px #ccc;
+    box-shadow: 1px 1px 1px 1px #ccc;
 
     border: 2px solid #8f8f8f;
     width: 110px;
@@ -17,7 +17,7 @@
     position: absolute;
     cursor: move;
     text-align: center;
-    padding-top: 0.3em;
+    padding-top: 3px;
 }
 
 #mindmap-map .component-selected {
@@ -29,7 +29,7 @@
 }
 
 #mindmap-map .component .component-title {
-    font-size: 11px;
+    font-size: 12px;
     width: 80px;
     border: 0px;
     -moz-box-shadow: none;
