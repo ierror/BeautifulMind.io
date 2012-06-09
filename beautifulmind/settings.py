@@ -4,6 +4,11 @@ import os, sys, environment
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))+'/'
 
+os.environ['DJANGO_SETTINGS_MODULE'] = 'beautifulmind.settings'
+
+# put the Django project on sys.path
+sys.path.insert(0, PROJECT_ROOT+'../')
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
