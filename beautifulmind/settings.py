@@ -90,9 +90,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '9k&icd+qdu4)kl(si5-o5@f@l*z*d93b43l)^yqh*n)7-ek&6o'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -193,9 +190,11 @@ for f in os.listdir(PROJECT_ROOT+'configuration/'):
 
     exec ('from configuration.%s import *' % f[:-3]) in locals(), globals()
 
-if environment.NAME is None or environment.IS_FOR_DEVELOPMENT is None:
-   raise CommandError('Configurationerror: Please edit environment.py in the project_root and set NAME and IS_FOR_DEVELOPMENT')
+if environment.NAME is None or environment.IS_FOR_DEVELOPMENT is None or not environment.SECRET_KEY:
+   raise CommandError('Configurationerror: Please edit environment.py in the project_root and set NAME, IS_FOR_DEVELOPMENT and SECRET_KEY')
 ENVIRONMENT = environment
+
+SECRET_KEY = ENVIRONMENT.SECRET_KEY
 
 # import env module
 exec('from configuration._50_env_%s import *' % environment.NAME)

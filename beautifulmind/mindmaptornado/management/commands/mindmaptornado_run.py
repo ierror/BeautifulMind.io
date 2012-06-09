@@ -11,7 +11,7 @@ class Command(BaseCommand):
     can_import_settings = True
 
     def handle(self, *args, **options):
-        MindmapWebSocketRouter = SockJSRouter(handlers.MindmapWebSocketHandler, '/echo')
+        MindmapWebSocketRouter = SockJSRouter(handlers.MindmapWebSocketHandler, '/ws')
 
         app_kwargs = {}
         if settings.ENVIRONMENT.IS_FOR_DEVELOPMENT:
