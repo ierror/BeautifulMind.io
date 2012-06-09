@@ -23,7 +23,7 @@ CACHES = {
 MEDIA_URL = 'http://beautifulmind.io/assets/'
 
 if not settings.DEBUG:
-    STATIC_URL = 'http://beautifulmind.io:8000/assets/static/'
+    STATIC_URL = 'http://beautifulmind.io/assets/static/'
 
 COMPRESS_ENABLED = False
 
