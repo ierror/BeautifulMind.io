@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from django.conf import settings as django_settings
+from beautifulmind import VERSION, get_version
 
 
 class SettingsProcessor(object):
@@ -12,3 +13,7 @@ class SettingsProcessor(object):
             return lambda request: {attr: getattr(django_settings, attr)}
 
 sys.modules[__name__ + '.settings'] = SettingsProcessor()
+
+
+def version(request):
+    return {'VERSION': get_version(VERSION)}

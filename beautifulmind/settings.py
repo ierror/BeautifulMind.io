@@ -104,6 +104,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     #'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
     'utils.context_processors.settings.MINDMAPTORNADO_SERVER',
+    'utils.context_processors.version',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -35,16 +35,23 @@
     <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-                <li><a class="brand" href="/">{% include 'includes/brand.html' %}</a></li>
-                {% block navbar_sub %}{% endblock %}
+                <li><a class="brand" href="/">{% include 'includes/brand.html' %} <span style="font-size: 10px; font-weight: bolder;"></span></a></li>
+                <li class="navbar-label-container">
+                    <span class='label label-primary' title="{% trans 'Current version' %}">
+                        v{{ VERSION }}
+                    </span>
+                </li>
+                {% block navbar_sub_left %}{% endblock %}
             </ul>
-
-            <div class="btn-group pull-right">
-                <a class="btn btn-small btn-info pull-right" data-toggle="modal" href="#mindmap-new">
-                    <i class="icon-plus-sign icon-white"></i> Map
-                </a>
-            </div>
-
+            <ul class="nav pull-right">
+                <li>
+                    <div class="btn-group">
+                        <a class="btn btn-small btn-info pull-right" data-toggle="modal" href="#mindmap-new">
+                            <i class="icon-plus-sign icon-white"></i> Map
+                        </a>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
