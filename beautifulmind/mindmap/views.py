@@ -78,3 +78,18 @@ def map_component_update_title(request, mindmap_pk, component_pk):
         response_data = {'success' : True}
 
     return HttpResponse(simplejson.dumps(response_data), 'application/json')
+
+
+def map_component_delete(request, mindmap_pk, component_pk):
+    component = get_object_or_404(MindMapComponent, pk=component_pk)
+
+    response_data = {'success' : False}
+    if request.method == 'POST':
+        # don't delete root component
+        if component.level == 0:
+            component.get_descendants().delete()
+        else:
+            component.delete()
+        response_data = {'success' : True}
+
+    return HttpResponse(simplejson.dumps(response_data), 'application/json')

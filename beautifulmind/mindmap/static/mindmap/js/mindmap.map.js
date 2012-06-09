@@ -56,62 +56,98 @@
         });
 
         $(document).on('keydown', function (e) {
+            var selected_component = $('.component-selected:first', self.element);
             // disable tab press key on page
             if (e.keyCode == 9) {
+                return false;
+            }
+
+            // ignore global backspace if title input has no focus
+            if (e.keyCode == 8 && !$('.component-title:first', selected_component).is(':focus')) {
                 return false;
             }
         });
 
         $(document).on('keyup', function (e) {
-             // remove focus from input fields
-             $('.component-title-input:hidden', self.element).blur();
+            // remove focus from input fields
+            $('.component-title-input:hidden', self.element).blur();
 
-             if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab key
+            var selected_component = $('.component-selected:first', self.element);
+            if (!selected_component.length) return true;
 
-                 // determine parent
-                 var parent_component;
-                 if (e.keyCode == 13) { // enter => sibling
-                     parent_component = $('#' + $('.component-selected:first', self.element)
-                         .data('mindmapMapComponent')
-                         .getDomId($('.component-selected:first', self.element)
-                         .attr('data-parent-component-pk')));
+            // on backspace => delete
+            if (e.keyCode == 8) {
+                // if title input has no focus
+                if (!$('.component-title:first', selected_component).is(':focus')) {
+                    selected_component.data('mindmapMapComponent').delete();
 
-                 } else { // tab => child
-                     parent_component = $('.component-selected:first', self.element);
-                 }
+                    var url = bm_globals.mindmap.map_component_delete.replace('#1#', self.pk).replace('#2#', selected_component.data('component-pk'));
+                    $.ajax({
+                        url:url,
+                        type:'POST',
+                        data:{},
+                        cache:false,
+                        success:function () {
+                            $.mindmapSockjs.send('delete_component', {
+                                map_pk:self.pk,
+                                component_pk:selected_component.data('component-pk')
+                            });
+                        },
+                        error:function () {
 
-                 if (!parent_component.length) return true;
+                        }
+                    });
 
-                 var parent_component_pos = parent_component.position();
-                 var pos_left, pos_top, type;
+                    return false;
+                } else {
+                    return true;
+                }
+            }
 
-                 if (e.keyCode == 13) {
-                     type = 'sibling';
-                     pos_left = parent_component_pos.left;
-                     pos_top = parent_component_pos.top;
-                 } else {
-                     type = 'child';
-                     pos_left = parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing.left;
-                     pos_top = parent_component_pos.top;
-                 }
+            // on enter or tab key
+            if (e.keyCode == 13 || e.keyCode == 9) {
+                // determine parent
+                var parent_component;
+                if (e.keyCode == 13) { // enter => sibling
+                    parent_component = $('#' + selected_component
+                        .data('mindmapMapComponent')
+                        .getDomId($('.component-selected:first', self.element)
+                        .attr('data-parent-component-pk')));
 
-                 // add tmp pk, save will replace it by created db component pk
-                 var component = self.addComponent({
-                     pk:'tmp-' + parseInt(Math.random() * 1000000).toString(),
-                     title:'Title',
-                     pos_left:pos_left,
-                     pos_top:pos_top,
-                     parent_pk:parent_component.attr('data-component-pk'),
-                     do_collide_check:true,
-                     type:type,
-                     set_focus_on_title_field:true,
-                     save:true
-                 });
+                } else { // tab => child
+                    parent_component = selected_component;
+                }
 
-                 component.toggleSelect();
-                 return false;
-             }
-         });
+                var parent_component_pos = parent_component.position();
+                var pos_left, pos_top, type;
+
+                if (e.keyCode == 13) {
+                    type = 'sibling';
+                    pos_left = parent_component_pos.left;
+                    pos_top = parent_component_pos.top;
+                } else {
+                    type = 'child';
+                    pos_left = parent_component_pos.left + parent_component.outerWidth() + self.options.component_spacing.left;
+                    pos_top = parent_component_pos.top;
+                }
+
+                // add tmp pk, save will replace it by created db component pk
+                var component = self.addComponent({
+                    pk:'tmp-' + parseInt(Math.random() * 1000000).toString(),
+                    title:'Title',
+                    pos_left:pos_left,
+                    pos_top:pos_top,
+                    parent_pk:parent_component.attr('data-component-pk'),
+                    do_collide_check:true,
+                    type:type,
+                    set_focus_on_title_field:true,
+                    save:true
+                });
+
+                component.toggleSelect();
+                return false;
+            }
+        });
     };
 
     MindMap.prototype.addComponent = function (data) {
@@ -213,12 +249,12 @@
                 },
                 cache:false,
                 success:function (response_data) {
-                    $.scrollTo(component.element, {offset: {left:0, top:self.options.topbar_height}});
+                    $.scrollTo(component.element, {offset:{left:0, top:self.options.topbar_height}});
 
                     // animate
                     var bg_color_origin = component.element.css('background-color');
                     component.element.css('background-color', '#4183c4');
-                    component.element.animate({'background-color': bg_color_origin}, 1000);
+                    component.element.animate({'background-color':bg_color_origin}, 1000);
 
                     component.setId(response_data.form.instance_pk);
                     component.addConnector();
@@ -240,7 +276,7 @@
             if (data.animate) {
                 var bg_color_origin = component.element.css('background-color');
                 component.element.css('background-color', '#4183c4');
-                component.element.animate({'background-color': bg_color_origin}, 1000);
+                component.element.animate({'background-color':bg_color_origin}, 1000);
             }
 
             component.addConnector();

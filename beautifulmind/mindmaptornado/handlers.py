@@ -62,6 +62,10 @@ class MindmapWebSocketHandler(SockJSConnection):
     def _add_component(self, data):
         self._broadcast_to_map('add_component', data)
 
+    @check_for_data('map_pk', 'component_pk', force_int=True)
+    def _delete_component(self, data):
+        self._broadcast_to_map('delete_component', data)
+
     def on_message(self, data):
         try:
             data = json_decode(data)
@@ -78,6 +82,7 @@ class MindmapWebSocketHandler(SockJSConnection):
            'update_component_title': self._update_component_title,
            'add_components_offset_except_one': self._add_components_offset_except_one,
            'add_component': self._add_component,
+           'delete_component': self._delete_component,
         }
 
         # call method

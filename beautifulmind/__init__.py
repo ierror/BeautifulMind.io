@@ -1,5 +1,6 @@
 VERSION = (0, 1, 0, 'alpha', 0)
 
+# Taken from Django project
 def get_version(version=None):
     """Derives a PEP386-compliant version number from VERSION."""
     if version is None:

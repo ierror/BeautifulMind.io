@@ -51,6 +51,10 @@
 
                 'update_map_participants_count': function(data) {
                     $('#mindmap-map').data('mindmapMap').updateParticipantsCount(data.map_participants_count);
+                },
+
+                'delete_component': function(data) {
+                    $('#mindmap-component-'+data.component_pk).data('mindmapMapComponent').delete();
                 }
             }
 

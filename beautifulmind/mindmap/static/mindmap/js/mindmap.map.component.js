@@ -223,8 +223,49 @@
         self.element.on('click', function () {
             self.toggleSelect();
         });
-
         return self;
+    };
+
+    MindMapComponent.prototype.getSiblings = function() {
+        var self = this;
+        return $('[data-parent-component-pk='+self.element.data('component-pk')+']', self.map);
+    };
+
+    MindMapComponent.prototype.delete = function () {
+        var self = this;
+
+        // collect siblings
+        var siblings = new Array();
+
+        // only delete selected component if none root
+        if (!self.element.hasClass('component-root')) {
+            siblings.push(self.element);
+        }
+
+        function _get_siblings(component) {
+            component.data('mindmapMapComponent').getSiblings().each(function() {
+                var sibling = $(this);
+                siblings.push(sibling);
+                _get_siblings(sibling);
+            });
+        }
+        _get_siblings(self.element);
+
+        $(siblings).each(function() {
+            var component = $(this);
+
+            $(jsPlumb.getConnections({source:component.data('mindmapMapComponent').getDomId(component.data('component-pk'))}, true)).each(function() {
+                jsPlumb.detach(this);
+            });
+
+            $(jsPlumb.getConnections({target:component.data('mindmapMapComponent').getDomId(component.data('component-pk'))}, true)).each(function() {
+                jsPlumb.detach(this);
+            });
+
+            component.remove();
+            component.data('mindmapMapComponent', undefined);
+            component = undefined;
+        });
     };
 
     MindMapComponent.prototype.addConnector = function() {
