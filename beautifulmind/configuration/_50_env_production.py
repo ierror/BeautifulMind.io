@@ -9,14 +9,14 @@ DATABASES = {
         'USER'     : 'postgres',
         'PASSWORD ': 'postgres',
         'HOST'     : '127.0.0.1',
-        'PORT'     : '',
+        'PORT'     : '6432',
     }
 }
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'beautifulmind-django-cache-default'
     }
 }
 
@@ -26,6 +26,7 @@ if not settings.DEBUG:
     STATIC_URL = 'http://beautifulmind.io/assets/static/'
 
 COMPRESS_ENABLED = True
+DEBUG = True
 
 MINDMAPTORNADO_BIND_PORT = 8001
 MINDMAPTORNADO_SERVER = 'http://beautifulmind.io/ws/'

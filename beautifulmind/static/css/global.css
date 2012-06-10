@@ -3,7 +3,7 @@ body {
 }
 
 #forkme-ribbon {
-    z-index: 9999;
+    z-index: 999;
     position: absolute;
     top: 41px;
     left: 0;
