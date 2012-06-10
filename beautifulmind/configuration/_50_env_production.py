@@ -20,7 +20,7 @@ CACHES = {
     }
 }
 
-MEDIA_URL = 'http://assets.beautifulmind.io/'
+MEDIA_URL = 'http://beautifulmind.io/assets/'
 
 if not settings.DEBUG:
     STATIC_URL = '%sstatic/' % (MEDIA_URL)
