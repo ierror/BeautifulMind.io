@@ -2,13 +2,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
-from django.views.generic.base import TemplateView
-
+from django.views.decorators.cache import cache_page
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', TemplateView.as_view(template_name='startpage.html')),
+    url(r'^$', cache_page(60 * 15)(TemplateView.as_view(template_name='startpage.html'))),
 
     url(r'^', include('beautifulmind.mindmap.urls')),
 
