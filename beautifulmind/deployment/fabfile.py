@@ -10,7 +10,7 @@ env.user = 'root'
 
 # Define sets of servers as roles
 env.roledefs = {
-    'production_web': ['beautifulmind.io', 'localhost'],
+    'production_web': ['assets.beautifulmind.io', 'app-1.beautifulmind.io'],
 }
 
 @roles('production_web')
@@ -23,7 +23,8 @@ def deploy_production_web():
         _sudo('python %smanage.py %s' % (REMOTE_PROJECT_PATH, command))
 
     # stop services
-    #run('apache2ctl stop')
+    run('supervisorctl stop mindmaptornado')
+    run('supervisorctl stop uwsgi')
 
     # backup
     _sudo('%sdeployment/db_backup.sh' % (REMOTE_PROJECT_PATH))
@@ -42,7 +43,8 @@ def deploy_production_web():
     files.sed('%ssettings.py' % (REMOTE_PROJECT_PATH), '^DEBUG\s*=\s*True$', 'DEBUG = False')
 
     # rm pyc files
-    #manage_py('clean_pyc')
+    manage_py('clean_pyc')
 
     # start services
-    #run('apache2ctl start')
+    run('supervisorctl start mindmaptornado')
+    run('supervisorctl start uwsgi')

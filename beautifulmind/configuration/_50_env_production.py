@@ -20,10 +20,10 @@ CACHES = {
     }
 }
 
-MEDIA_URL = 'http://beautifulmind.io/assets/'
+MEDIA_URL = 'http://assets.beautifulmind.io/'
 
 if not settings.DEBUG:
-    STATIC_URL = 'http://beautifulmind.io/assets/static/'
+    STATIC_URL = '%sstatic/' % (MEDIA_URL)
 
 COMPRESS_ENABLED = True
 DEBUG = True
