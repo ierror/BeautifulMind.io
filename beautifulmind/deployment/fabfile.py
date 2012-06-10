@@ -45,4 +45,4 @@ def deploy_production_web():
     #manage_py('clean_pyc')
 
     # start services
-    run('apache2ctl start')
+    #run('apache2ctl start')

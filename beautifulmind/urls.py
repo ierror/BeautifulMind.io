@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.views.decorators.cache import cache_page
+from django.views.generic.base import TemplateView
 
 admin.autodiscover()
 
