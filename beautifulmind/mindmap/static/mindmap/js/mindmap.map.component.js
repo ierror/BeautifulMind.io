@@ -56,7 +56,7 @@
         title_input.data('last-value', opts.title);
         title_input.attr('value', opts.title);
         title_input.on('keyup', function (e) {
-            if (e.keyCode == 13 || e.keyCode == 9) { // on enter or tab
+            if (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 27) { // on enter, tab or escape
                 title_input.blur();
                 return false;
             }
