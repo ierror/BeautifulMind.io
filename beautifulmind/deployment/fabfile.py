@@ -10,7 +10,7 @@ env.user = 'root'
 
 # Define sets of servers as roles
 env.roledefs = {
-    'production_web': ['assets.beautifulmind.io', 'app-1.beautifulmind.io'],
+    'production_web': ['app-1.beautifulmind.io'],
 }
 
 @roles('production_web')
