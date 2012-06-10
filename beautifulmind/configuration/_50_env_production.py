@@ -26,7 +26,6 @@ if not settings.DEBUG:
     STATIC_URL = '%sstatic/' % (MEDIA_URL)
 
 COMPRESS_ENABLED = True
-DEBUG = True
 
 MINDMAPTORNADO_BIND_PORT = 8001
 MINDMAPTORNADO_SERVER = 'http://beautifulmind.io/ws/'
