@@ -1,0 +1,27 @@
+{% load i18n %}<div id="navbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav">
+                <li><a class="brand" href="/">{% include 'includes/brand.html' %}</a></li>
+                <li class="navbar-label-container">
+                    <span class='label label-primary' title="{% trans 'Current version' %}">
+                        v{{ VERSION }}
+                    </span>
+                </li>
+                {% block navbar_sub_left %}{% endblock %}
+            </ul>
+            <ul class="nav pull-right">
+                <li>
+                    <div class="btn-group">
+                        <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-new">
+                            <i class="icon-plus-sign icon-white"></i> Map
+                        </a>
+                        <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-cheatsheet">
+                            <i class="icon-th-list icon-white"></i> Cheatsheet
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
