@@ -25,7 +25,7 @@ MEDIA_URL = 'http://beautifulmind.io/assets/'
 if not settings.DEBUG:
     STATIC_URL = 'http://beautifulmind.io/assets/static/'
 
-COMPRESS_ENABLED = False
+COMPRESS_ENABLED = True
 
 MINDMAPTORNADO_BIND_PORT = 8001
-MINDMAPTORNADO_SERVER = 'http://beautifulmind.io:%d/ws/' % (MINDMAPTORNADO_BIND_PORT)
+MINDMAPTORNADO_SERVER = 'http://beautifulmind.io/ws/'
