@@ -313,8 +313,16 @@
 
     MindMapComponent.prototype.toggleSelect = function () {
         var self = this;
-        $('.component', self.map).removeClass('component-selected'); // deselect all components
-        self.element.toggleClass('component-selected');
+        var current_selected_component = $('.component-selected', self.map);
+
+        // only if component is not already connected
+        if (current_selected_component.attr('id') == self.element.attr('id')) {
+            return;
+        }
+
+        $('.component-title:focus', current_selected_component).blur(); // remove focus on input
+        current_selected_component.removeClass('component-selected'); // deselect component
+        self.element.addClass('component-selected');
     }
 
     MindMapComponent.prototype.deselect = function() {
