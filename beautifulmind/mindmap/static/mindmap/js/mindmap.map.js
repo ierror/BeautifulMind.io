@@ -69,9 +69,6 @@
         });
 
         $(document).on('keyup', function (e) {
-            // remove focus from input fields
-            $('.component-title-input:hidden', self.element).blur();
-
             var selected_component = $('.component-selected:first', self.element);
             if (!selected_component.length) return true;
 
@@ -79,8 +76,8 @@
             if (e.keyCode == 8) {
                 // if title input has no focus
                 if (!$('.component-title:first', selected_component).is(':focus')) {
-                    selected_component.data('mindmapMapComponent').delete();
 
+                    selected_component.data('mindmapMapComponent').delete();
                     var url = bm_globals.mindmap.map_component_delete.replace('#1#', self.pk).replace('#2#', selected_component.data('component-pk'));
                     $.ajax({
                         url:url,
@@ -106,6 +103,11 @@
 
             // on enter or tab key
             if (e.keyCode == 13 || e.keyCode == 9) {
+                // root components can not have siblings components, create child on enter
+                if (selected_component.hasClass('component-root')) {
+                    e.keyCode = 9;
+                }
+
                 // determine parent
                 var parent_component;
                 if (e.keyCode == 13) { // enter => sibling
