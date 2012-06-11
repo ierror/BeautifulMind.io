@@ -6,7 +6,6 @@ django-bootstrap-form==2.0.3
 django-compressor==1.1.2
 django-extensions==0.8
 django-mptt==0.5.2
-gunicorn==0.14.3
 psycopg2==2.4.5
 python-memcached==1.48
 sockjs-tornado==0.0.4
