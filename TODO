@@ -2,16 +2,8 @@ TODO
 ====
 
 ## General
-* activate Gzip?
 * use cookie based sessions?
 * cleanup scrollwheel stuff?
 * modal on connection to sockjs server lost => reconnect
-*
-
-## Deployment
-* use memcache
-* pgbouncer
-
-## Doc
-* create cache Table ./manage.py createcachetable cache
-* mindmaptornado http://bugs.python.org/issue13521 >= python2.7
+* focus on first input field on modal open
+* connecting / connected / disconnected label on mindmap header
