@@ -32,8 +32,10 @@
                     success: function (data) {
                         body.html(data);
 
+                        var form = $('form:first', body);
+
                         // submit fields on enter
-                        body.find('form:first').find('input').bind('keypress', function(e) {
+                        $('input', form).bind('keypress', function(e) {
                             if(e.keyCode == 13) { // enter code
                                 self.submit();
                                 return false;
@@ -41,6 +43,12 @@
                         });
 
                         submit_btn.removeClass('disabled');
+
+                        // set focus on first input fields
+                        $('input:visible:first', form).focus();
+
+                        // trigger init func
+                        self.trigger('initiated');
                     },
                     error: function() {
                         submit_btn.removeClass('disabled');
@@ -53,9 +61,14 @@
                 self.submit();
             });
 
+            self.on('show', function() {
+                self.submit('GET');
+                return self;
+            });
+
             // init
             $(opts.title_tag+':first', self).html(opts.title);
-            self.submit('GET');
+            submit_btn.addClass('disabled');
         });
     };
 })(jQuery);
