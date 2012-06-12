@@ -1,11 +1,25 @@
 (function($) {
     $.mindmapSockjs = function() {
         var self = this;
+        var map;
         self.socket = new SockJS(bm_globals.mindmaptornado.server);
 
+        // status label handling
+        var navbar = $('#navbar');
+
+        self.show_status = function(what, duration) {
+            $('.ws-status', navbar).hide(duration, function(){
+                $('.ws-status-'+what, navbar).show(duration);
+            });
+        }
+
+        self.show_status('connecting', 0);
+
         self.socket.onopen = function() {
+            self.show_status('connected', 800);
+
             // fetch and init map
-            $('#mindmap-map').mindmapMap();
+            map = $('#mindmap-map').mindmapMap();
 
             // register client as map participant if we are currently on a map
             var map_pk = $('#mindmap-map').attr('data-map-pk');
@@ -70,6 +84,11 @@
 
         self.socket.onclose = function() {
             this.socket = null;
+            self.show_status('error', 0);
+
+            if (map) {
+                map.hide('slow');
+            }
         };
 
         self.send = function(method, data) {
