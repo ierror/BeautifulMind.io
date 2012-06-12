@@ -1,0 +1,104 @@
+{% load compress i18n %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>BeautifulMind.io - {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Real-time web-based collaborative open source mind mapping.">
+    <meta name="author" content="Bernhard Janetzki">
+
+    <!-- Le styles -->
+    {% compress css %}
+    <link href="{{ STATIC_URL }}css/global.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    {% endcompress %}
+
+    <!-- app styles -->
+    {% block app_css %}{% endblock %}
+    <!-- /app styles -->
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    {% compress js %}
+    <script src="{{ STATIC_URL }}js/lib/html5shiv.js"></script>
+    {% endcompress %}
+
+    <![endif]-->
+
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.gif">
+</head>
+
+<body>
+
+<!-- navbar -->
+<div id="navbar" class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <ul class="nav">
+                <li><a class="brand" href="/">{% include 'includes/brand.html' %}</a></li>
+                <li class="navbar-label-container">
+                    <span class='label label-primary' title="{% trans 'Current version' %}">
+                        v{{ VERSION }}
+                    </span>
+                </li>
+                {% block navbar_sub_left %}{% endblock %}
+            </ul>
+            <ul class="nav pull-right">
+                <li>
+                    <div class="btn-group">
+                        <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-new">
+                            <i class="icon-plus-sign icon-white"></i> Map
+                        </a>
+                        <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-cheatsheet">
+                            <i class="icon-th-list icon-white"></i> Cheatsheet
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /navbar -->
+
+<div class="container">
+    <!-- main content -->
+    {% block content %}{% endblock %}
+    <!-- /main content -->
+</div>
+<!-- /container -->
+
+<!-- create new map modal -->
+{% include 'includes/mindmap_new_modal.html' %}
+<!-- /create new map modal -->
+
+<!-- cheatsheet -->
+{% include 'includes/cheatsheet_modal.html' %}
+<!-- /cheatsheet -->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<!-- global javascript -->
+{% compress js %}
+<script src="{{ STATIC_URL }}js/lib/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/lib/sockjs-0.3.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/lib/jquery-ui-1.8.20.custom.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/lib/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/boostrap.modal.form.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/global.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}mindmap/js/global.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/tracking.js" type="text/javascript" charset="utf-8"></script>
+{% endcompress %}
+
+{% include 'includes/global_js_vars.html' %}
+
+<!-- /global javascript -->
+
+<!-- app javascript -->
+{% block app_js %}{% endblock %}
+<!-- /app javascript -->
+
+</body>
+</html>
