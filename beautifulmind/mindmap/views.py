@@ -127,7 +127,7 @@ def map_export_form(request, mindmap_pk):
 
             phantomjs_command = 'phantomjs %s/bin/export.js %s %s' % (
                 os.path.dirname(__file__),
-                request.build_absolute_uri(reverse('mindmap_map_export', args=[mindmap_pk])).replace('8000', '8002'),
+                request.build_absolute_uri(reverse('mindmap_map_export', args=[mindmap_pk])),
                 tmpfile.name
             )
 
