@@ -12,7 +12,11 @@ urlpatterns = patterns('mindmap.views',
     url(r'^map/(?P<mindmap_pk>(\d|#)+)/component/(?P<component_pk>(\d|#)+)/delete/$', 'map_component_delete', name='mindmap_map_component_delete'),
 
     url(r'^map/(?P<mindmap_pk>(\d|#)+)/components/add_offset/$', 'map_components_add_offset', name='mindmap_map_components_add_offset'),
-    url(r'^map/(?P<mindmap_pk>\d+)/components/$', 'map_components', name='mindmap_map_components'),
+    url(r'^map/(?P<mindmap_pk>(\d|#)+)/components/$', 'map_components', name='mindmap_map_components'),
+
+    url(r'^map/(?P<mindmap_pk>\d+)/export/$', 'map_export', name='mindmap_map_export'),
+    url(r'^map/(?P<mindmap_pk>\d+)/export/form/$', 'map_export_form', name='mindmap_map_export_form'),
+    url(r'^map/(?P<mindmap_pk>\d+)/export/download/$', 'map_export_download', name='mindmap_map_export_download'),
 
     url(r'^(?P<mindmap_slug>.+)$', 'map_show', name='mindmap_map_show'),
 )

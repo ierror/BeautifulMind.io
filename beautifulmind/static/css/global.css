@@ -21,3 +21,13 @@ body {
 #component-tpl {
     display: None;
 }
+
+.ajax-load {
+    text-align: center;
+    vertical-align: middle;
+    display: none;
+}
+
+.form-horizontal-p {
+    text-align: center;
+}

@@ -1,0 +1,41 @@
+{% load i18n %}<div id="mindmap-cheatsheet" class="modal hide">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h3>{% trans 'Cheatsheet' %}</h3>
+    </div>
+    <div class="modal-body">
+        <h4>Actions that can be applied to an active component</h4>
+
+        <p>Click a component to make it active. Result:
+            <img src="{{STATIC_URL}}img/cheatsheet/active_component.png">
+        </p>
+
+        <p>Now it's time to apply some actions to our active component:</p>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{% trans 'Key' %}</th>
+                <th>{% trans 'Action' %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>&#x21e5; {% trans '(Tab)' %}</td>
+                <td>{% trans 'creates a child' %}</td>
+            </tr>
+            <tr>
+                <td>&#x2324; {% trans '(Enter)' %}</td>
+                <td>{% trans 'creates a sibling' %}</td>
+            </tr>
+            <tr>
+                <td>&#x21E4; {% trans '(Backspace)' %}</td>
+                <td>{% trans 'deletes a component and all siblings' %}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">{% trans 'close' %}</button>
+    </div>
+</div>

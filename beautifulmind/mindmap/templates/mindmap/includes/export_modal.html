@@ -1,0 +1,15 @@
+{% load i18n %}<div id="mindmap-export" class="modal modal-form hide" data-url="{% url mindmap_map_export_form mindmap.pk %}"
+     data-title="{% trans 'Export' %}">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h3></h3>
+    </div>
+    <div class="modal-body">
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-success">
+            <li class="icon-ok icon-white"></li>
+            {% trans 'Export' %}
+        </a>
+    </div>
+</div>

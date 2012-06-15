@@ -1,6 +1,6 @@
 beautifulmind/environment.py
 beautifulmind/virtualenv/
-beautifulmind/assets/*
+
 
 *.pyc
 .idea/

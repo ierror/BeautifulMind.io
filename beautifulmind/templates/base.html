@@ -48,10 +48,13 @@
                 <li>
                     <div class="btn-group">
                         <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-new">
-                            <i class="icon-plus-sign icon-white"></i> Map
+                            <i class="icon-plus-sign icon-white"></i> {% trans 'Map' %}
                         </a>
+
+                        {% block navbar_sub_right_middle %}{% endblock%}
+
                         <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-cheatsheet">
-                            <i class="icon-th-list icon-white"></i> Cheatsheet
+                            <i class="icon-th-list icon-white"></i> {% trans 'Cheatsheet' %}
                         </a>
                     </div>
                 </li>
@@ -75,6 +78,10 @@
 <!-- cheatsheet -->
 {% include 'includes/cheatsheet_modal.html' %}
 <!-- /cheatsheet -->
+
+<!-- ajax load tpl -->
+{% include 'includes/ajax_load.html' %}
+<!-- /ajax load tpl -->
 
 <!-- Le javascript
 ================================================== -->

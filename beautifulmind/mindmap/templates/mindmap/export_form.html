@@ -1,0 +1,13 @@
+{% load i18n %}
+
+{% include 'includes/form.html' %}
+
+{% if export_file %}
+    {% block form_footer %}
+    {% load compress %}
+    <p class="form-horizontal-p">
+        <a id="mindmap-export-download-btn" class="btn btn-primary btn-mini" href="{% url mindmap_map_export_download mindmap.pk %}?file={{ export_file|iriencode }}">{% trans 'download' %}</a>
+    </p>
+    {% endblock %}
+{% endif %}
+

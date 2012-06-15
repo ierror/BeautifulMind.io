@@ -17,7 +17,13 @@
 
             // load form helper
             self.submit = function(method) {
-                var data = body.find('form:first').serialize();
+                var form = body.find('form:first');
+                form.hide();
+
+                // show ajax loader
+                body.append($('#ajax-load').clone().show().wrap('<div></div>').parent().html());
+
+                var data = form.serialize();
                 if (!method) {
                     method = 'POST'
                 }
@@ -49,9 +55,15 @@
 
                         // trigger init func
                         self.trigger('initiated');
+
+                        $('#ajax-load', body).remove();
+                        form.show();
                     },
                     error: function() {
                         submit_btn.removeClass('disabled');
+
+                        $('#ajax-load', body).remove();
+                        form.show();
                     }
                 });
             };

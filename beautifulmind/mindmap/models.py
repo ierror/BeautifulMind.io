@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from django.db.utils import IntegrityError
 from utils.slughifi import slughifi
 from django.db import models
 from django.utils.translation import ugettext_lazy as _

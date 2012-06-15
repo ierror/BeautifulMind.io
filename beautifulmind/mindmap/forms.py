@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from .models import MindMap, MindMapComponent
 
 
@@ -26,3 +27,9 @@ class MindMapComponentForm(forms.ModelForm):
         if mindmap:
             self.fields['parent'].queryset = mindmap.root_component.get_descendants(include_self=True)
 
+
+class MindMapExportForm(forms.Form):
+    export_format = forms.ChoiceField(label=_('Format'), choices=(
+        ('pdf', _('PDF')),
+        ('image', _('Image'))
+    ))

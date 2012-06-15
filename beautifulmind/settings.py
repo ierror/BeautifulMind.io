@@ -198,3 +198,11 @@ SECRET_KEY = ENVIRONMENT.SECRET_KEY
 
 # import env module
 exec('from configuration._50_env_%s import *' % environment.NAME)
+
+# sendfile
+if DEBUG and environment.IS_FOR_DEVELOPMENT:
+    SENDFILE_BACKEND = 'sendfile.backends.development'
+else:
+    SENDFILE_BACKEND = 'sendfile.backends.nginx'
+    SENDFILE_ROOT = MEDIA_ROOT
+    SENDFILE_URL = MEDIA_URL

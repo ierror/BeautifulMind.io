@@ -2,4 +2,12 @@
 <form class="form-horizontal" action="" method="POST">
     {{ form|bootstrap }}
     {% csrf_token %}
+
+    {% for global_error in global_form_errors %}
+    <p>
+        <span class="label label-important">{{ global_error }}</span></li>
+    </p>
+    {% endfor %}
+
+    {% block form_footer %}{%endblock%}
 </form>

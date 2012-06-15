@@ -10,7 +10,8 @@
     var version = '0.1',
         defaults = {
             component_spacing:{left:40, top:15},
-            topbar_height:40 + 5 // height + 5 px spacing
+            topbar_height:40 + 5, // height + 5 px spacing
+            run_init:true
         };
 
     function MindMap(element, options) {
@@ -25,7 +26,8 @@
         self.pk = self.element.data('map-pk');
         self._defaults = defaults;
         jsPlumb.ready(function () {
-            self.init();
+            if (self.options.run_init)
+                self.init();
         });
     }
 
@@ -33,8 +35,9 @@
         var self = this;
 
         // load initial components
+        var url = bm_globals.mindmap.map_components_get.replace('#1#', self.pk);
         $.ajax({
-            url:self.element.data('components-url'),
+            url:url,
             type:'POST',
             data:{},
             cache:false,

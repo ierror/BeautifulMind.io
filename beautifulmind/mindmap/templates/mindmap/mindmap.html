@@ -2,27 +2,17 @@
 
 {% block title %}{{ mindmap.name }}{% endblock %}
 
-{% block navbar_sub_left %}
-        <li class="divider-vertical"></li>
-        <li class="navbar-label-container">
-            <span class='ws-status ws-status-connected label label-success' title="{% trans 'Number of participants' %}">
-                <i class='icon-user icon-white'></i> <span id="mindmap-map-participants-count">0</span>
-            </span>
-            <span class='ws-status ws-status-connecting label label-info' title="{% trans 'connecting' %}">
-                <i class='icon-user icon-refresh icon-white'></i> connecting
-            </span>
-            <span class='ws-status ws-status-error label label-important' title="{% trans 'Connection lost' %}">
-                <i class='icon-user icon-fire icon-white'></i> Connection lost, reload page!
-            </span>
-        </li>
+{% include 'mindmap/includes/navbar_sub_left.html' %}
+
+{% block navbar_sub_right_middle %}
+    <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-export">
+        <i class="icon-hdd icon-white"></i> {% trans 'Export' %}
+    </a>
 {% endblock %}
 
 {% block content %}
-<div id="mindmap-map" data-components-url="{% url mindmap_map_components mindmap.pk %}" data-map-pk="{{ mindmap.pk }}" tabindex="0">
-    <div class="component" id="component-tpl">
-        <input class="input-small component-title">
-    </div>
-</div>
+{% include 'mindmap/includes/map.html' %}
+{% include 'mindmap/includes/export_modal.html' %}
 {% endblock %}
 
 {% block app_js %}
