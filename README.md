@@ -4,9 +4,9 @@ BeautifulMind.io is a really-real time collaborative mindmap tool inspired by [e
 It’s build with the help of django, tornado, sock.js.
 [etherpad-lite]: https://github.com/Pita/etherpad-lite
 
-[Follow us on twitter][]
-	
-	[Follow us on twitter]: http://twitter.com/BeautifulMindio
+[Follow us un Twitter][]
+
+  [Follow us on Twitter]: http://twitter.com/BeautifulMindio
 
 [View Demo][]
 
