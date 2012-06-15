@@ -2,12 +2,25 @@
 
 {% block title %}{{ mindmap.name }}{% endblock %}
 
-{% include 'mindmap/includes/navbar_sub_left.html' %}
+{% block navbar_sub_left %}
+<li class="divider-vertical"></li>
+<li class="navbar-label-container">
+    <span class='ws-status ws-status-connected label label-success' title="{% trans 'Number of participants' %}">
+        <i class='icon-user icon-white'></i> <span id="mindmap-map-participants-count">0</span>
+    </span>
+    <span class='ws-status ws-status-connecting label label-info' title="{% trans 'connecting' %}">
+        <i class='icon-user icon-refresh icon-white'></i> {% trans 'connecting' %}
+    </span>
+    <span class='ws-status ws-status-error label label-important' title="{% trans 'Connection lost' %}">
+        <i class='icon-user icon-fire icon-white'></i> {% trans 'Connection lost, reload page!'%}
+    </span>
+</li>
+{% endblock %}
 
 {% block navbar_sub_right_middle %}
-    <a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-export">
-        <i class="icon-hdd icon-white"></i> {% trans 'Export' %}
-    </a>
+<a class="btn btn-small btn-info" data-toggle="modal" href="#mindmap-export">
+    <i class="icon-hdd icon-white"></i> {% trans 'Export' %}
+</a>
 {% endblock %}
 
 {% block content %}
@@ -17,8 +30,10 @@
 
 {% block app_js %}
 {% compress js %}
-<script src="{{ STATIC_URL }}mindmap/js/lib/jquery.jsPlumb-1.3.8-all.js" type="text/javascript" charset="utf-8"></script>
-<script src="{{ STATIC_URL }}mindmap/js/lib/jquery.collisioncheck-1.1.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}mindmap/js/lib/jquery.jsPlumb-1.3.8-all.js" type="text/javascript"
+        charset="utf-8"></script>
+<script src="{{ STATIC_URL }}mindmap/js/lib/jquery.collisioncheck-1.1.js" type="text/javascript"
+        charset="utf-8"></script>
 <script src="{{ STATIC_URL }}mindmap/js/lib/jquery.scrollTo-1.4.2.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}mindmap/js/lib/jquery.color.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}mindmap/js/lib/sockjs-0.3.1.js" type="text/javascript" charset="utf-8"></script>
