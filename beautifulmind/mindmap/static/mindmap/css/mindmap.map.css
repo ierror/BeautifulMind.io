@@ -20,6 +20,10 @@
     padding-top: 4px;
 }
 
+#mindmap-map .component:hover {
+	border-color: #FF3300;
+}
+
 #mindmap-map .component-selected {
     border-color: #4183c4;
 }
