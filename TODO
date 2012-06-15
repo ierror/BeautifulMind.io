@@ -2,8 +2,4 @@ TODO
 ====
 
 ## General
-* use cookie based sessions?
-* cleanup scrollwheel stuff?
-* modal on connection to sockjs server lost => reconnect
-* focus on first input field on modal open
-* connecting / connected / disconnected label on mindmap header
+* write clean mgmt command for export objects
