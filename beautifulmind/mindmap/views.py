@@ -133,7 +133,7 @@ def map_export_form(request, mindmap_pk):
 
             # on production systems there is no xserver installed (i hope so ^^) => use xvfb
             if not settings.ENVIRONMENT.IS_FOR_DEVELOPMENT:
-                exit_code = XvfbRun.run_xcommand_and_wait(phantomjs_command)['exit_code']
+                exit_code = XvfbRun().run_xcommand_and_wait(phantomjs_command)['exit_code']
             else:
                 exit_code = call(phantomjs_command, shell=True)
 
