@@ -13,7 +13,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Boerni', 'boerni@gmail.com'),
+    #('Admin', 'admin@example.com'),
 )
 
 MANAGERS = ADMINS
@@ -195,6 +195,9 @@ if environment.NAME is None or environment.IS_FOR_DEVELOPMENT is None or not env
 ENVIRONMENT = environment
 
 SECRET_KEY = ENVIRONMENT.SECRET_KEY
+
+if hasattr(ENVIRONMENT, 'ADMINS'):
+    ADMINS = ENVIRONMENT.ADMINS
 
 # import env module
 exec('from configuration._50_env_%s import *' % environment.NAME)
