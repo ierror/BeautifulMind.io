@@ -142,7 +142,7 @@ def map_export_form(request, mindmap_pk):
             else:
                 export_file = default_storage.save('%s%s-%s.%s' % (
                     EXPORTS_SAVE_PATH,
-                    datetime.now().strftime("%Y-%m-%d_%H%M%S"),
+                    datetime.now().strftime('%Y-%m-%d_%H%M%S'),
                     mindmap.slug, export_format),
                     ContentFile(tmpfile.file.read())
                 )
