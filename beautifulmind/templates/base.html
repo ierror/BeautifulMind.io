@@ -36,7 +36,7 @@
     <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-                <li><a class="brand" href="/">{% include 'includes/brand.html' %}</a></li>
+                <li><a class="brand" href="{% url startpage %}">{% include 'includes/brand.html' %}</a></li>
                 <li class="navbar-label-container">
                     <span class='label label-primary' title="{% trans 'Current version' %}">
                         v{{ VERSION }}

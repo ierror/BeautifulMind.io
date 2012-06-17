@@ -29,3 +29,7 @@ COMPRESS_ENABLED = True
 
 MINDMAPTORNADO_BIND_PORT = 8001
 MINDMAPTORNADO_SERVER = 'http://beautifulmind.io/ws/'
+
+ADMINS = (
+    ('Bernhard', 'boerni@beautifulmind.io'),
+)

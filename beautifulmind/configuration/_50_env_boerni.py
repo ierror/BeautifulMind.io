@@ -23,3 +23,9 @@ DEBUG = True
 
 MINDMAPTORNADO_BIND_PORT = 1234
 MINDMAPTORNADO_SERVER = 'http://192.168.100.200:%d/ws' % (MINDMAPTORNADO_BIND_PORT)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}

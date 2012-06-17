@@ -118,7 +118,7 @@ MIDDLEWARE_CLASSES = (
     #'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'beautifulmind.urls'
 
 TEMPLATE_DIRS = (
     PROJECT_ROOT+'templates/'
@@ -196,16 +196,5 @@ ENVIRONMENT = environment
 
 SECRET_KEY = ENVIRONMENT.SECRET_KEY
 
-if hasattr(ENVIRONMENT, 'ADMINS'):
-    ADMINS = ENVIRONMENT.ADMINS
-
 # import env module
 exec('from configuration._50_env_%s import *' % environment.NAME)
-
-# sendfile
-if DEBUG and environment.IS_FOR_DEVELOPMENT:
-    SENDFILE_BACKEND = 'sendfile.backends.development'
-else:
-    SENDFILE_BACKEND = 'sendfile.backends.nginx'
-    SENDFILE_ROOT = MEDIA_ROOT
-    SENDFILE_URL = MEDIA_URL

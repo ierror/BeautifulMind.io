@@ -1,7 +1,7 @@
 beautifulmind/environment.py
 beautifulmind/virtualenv/
 beautifulmind/assets/*
-
+beautifulmind/configuration/_50_env_production.py
 *.pyc
 .idea/
 .DS_Store

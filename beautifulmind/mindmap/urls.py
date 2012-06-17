@@ -18,5 +18,5 @@ urlpatterns = patterns('mindmap.views',
     url(r'^map/(?P<mindmap_pk>\d+)/export/form/$', 'map_export_form', name='mindmap_map_export_form'),
     url(r'^map/(?P<mindmap_pk>\d+)/export/download/$', 'map_export_download', name='mindmap_map_export_download'),
 
-    url(r'^(?P<mindmap_slug>.+)$', 'map_show', name='mindmap_map_show'),
+    url(r'^(?P<mindmap_slug>[0-9]+\-(\w|-)+)$', 'map_show', name='mindmap_map_show'),
 )
