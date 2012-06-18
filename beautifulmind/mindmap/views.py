@@ -18,9 +18,16 @@ from .forms import MindMapForm, MindMapExportForm
 
 def map_show(request, mindmap_slug):
     mindmap = get_object_or_404(MindMap, slug=mindmap_slug)
+
+    # show cheatsheet on first visit
+    show_cheatsheet = request.session.get('mindmap_map_show_cheatsheet', True)
+    if show_cheatsheet:
+        request.session['mindmap_map_show_cheatsheet'] = False
+
     return render_to_response('mindmap/mindmap.html',
-            {
-            'mindmap': mindmap
+        {
+            'mindmap': mindmap,
+            'show_cheatsheet': int(show_cheatsheet)
         },
         context_instance=RequestContext(request))
 

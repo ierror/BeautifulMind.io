@@ -118,6 +118,9 @@ MIDDLEWARE_CLASSES = (
     #'django.contrib.messages.middleware.MessageMiddleware',
 )
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_AGE = 3600*24*365 # one year
+
 ROOT_URLCONF = 'beautifulmind.urls'
 
 TEMPLATE_DIRS = (

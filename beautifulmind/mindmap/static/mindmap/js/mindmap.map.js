@@ -34,6 +34,9 @@
     MindMap.prototype.init = function () {
         var self = this;
 
+        // show cheatsheet?
+        if (self.element.data('show-cheatsheet')) $('#mindmap-cheatsheet').modal('show');
+
         // load initial components
         var url = bm_globals.mindmap.map_components_get.replace('#1#', self.pk);
         $.ajax({
