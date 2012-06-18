@@ -34,12 +34,22 @@
 
 #mindmap-map .component .component-title {
     font-size: 12px;
-    width: 80px;
-    border: 0px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
 }
+
+
+#mindmap-map .component input.component-title {
+	border: 0;
+}
+
+#mindmap-map .component input.component-title .active {
+	border: 0; /* first step with background color for editing */
+	background-color: #cccccc;
+	color: #000000; /* darker text while editing*/
+}
+
 
 #navbar .ws-status {
     display: none;
