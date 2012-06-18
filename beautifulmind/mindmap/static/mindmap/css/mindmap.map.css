@@ -21,7 +21,7 @@
 }
 
 #mindmap-map .component:hover {
-	border-color: #FF3300;
+    border-color: #FF3300;
 }
 
 #mindmap-map .component-selected {
@@ -39,17 +39,15 @@
     box-shadow: none;
 }
 
-
 #mindmap-map .component input.component-title {
-	border: 0;
+    border: 0;
 }
 
-#mindmap-map .component input.component-title .active {
-	border: 0; /* first step with background color for editing */
-	background-color: #cccccc;
-	color: #000000; /* darker text while editing*/
+#mindmap-map .component input.component-title:focus {
+    border: 0; /* first step with background color for editing */
+    background-color: #cccccc;
+    color: #000000; /* darker text while editing*/
 }
-
 
 #navbar .ws-status {
     display: none;
