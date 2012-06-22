@@ -3,52 +3,53 @@
 {% block title %}Hello{% endblock %}
 
 {% block content %}
-<div class="hero-unit" xmlns="http://www.w3.org/1999/html">
-    <h1>{% include 'includes/brand.html' %}</h1>
-    <p>
-        <span class="simple-tooltip" title="Bullshit!!11eleven" data-placement='right'>Real-time web-based collaborative open source mind mapping.</span>
-    </p>
-    <p>
-        <a class="btn btn-small btn-info pull-left" data-toggle="modal" href="#mindmap-new">
-            <i class="icon-plus-sign icon-white"></i> Try it!
-        </a>
-    </p>
-</div>
-
-<div class="row">
-    <div class="span4">
-        <h2>Screencast</h2>
-
-        <p>Watch a screencast about the most commonly used {% include 'includes/brand.html' %} features!</p>
-
-        <p><a class="btn btn-success" href="#">Watch &raquo;</a></p>
-    </div>
-
-    <div class="span4">
-        <h2>Help me!</h2>
-
+<div class="container">
+    <div class="hero-unit" xmlns="http://www.w3.org/1999/html">
+        <h1>{% include 'includes/brand.html' %}</h1>
         <p>
-            Please <a href="https://github.com/nerdsportgruppe/BeautifulMind.io" target="_blank">fork the project</a>
-            and contribute to make {% include 'includes/brand.html' %} better software and more useful for everyone!
+            <span class="simple-tooltip" title="Bullshit!!11eleven" data-placement='right'>Real-time web-based collaborative open source mind mapping.</span>
         </p>
-
-        <p><a class="btn btn-success" href="https://github.com/nerdsportgruppe/BeautifulMind.io" target="_blank">Fork me on github! &raquo;</a></p>
-    </div>
-
-    <div class="span4">
-        <h2>Contact</h2>
-
         <p>
-            You can send me an <a href="mailto:boerni@beautifulmind.io">email</a> or
-            <br/><br/>
+            <a class="btn btn-small btn-info pull-left" data-toggle="modal" href="#mindmap-new">
+                <i class="icon-plus-sign icon-white"></i> Try it!
+            </a>
         </p>
-
-        <p><a class="btn btn-success" href="https://twitter.com/#!/i_error" target="_blank">Follow me on twitter! &raquo;</a></p>
     </div>
+
+    <div class="row">
+        <div class="span4">
+            <h2>Screencast</h2>
+
+            <p>Watch a screencast about the most commonly used {% include 'includes/brand.html' %} features!</p>
+
+            <p><a class="btn btn-success" href="#">Watch &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h2>Help me!</h2>
+
+            <p>
+                Please <a href="https://github.com/nerdsportgruppe/BeautifulMind.io" target="_blank">fork the project</a>
+                and contribute to make {% include 'includes/brand.html' %} better software and more useful for everyone!
+            </p>
+
+            <p><a class="btn btn-success" href="https://github.com/nerdsportgruppe/BeautifulMind.io" target="_blank">Fork me on github! &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h2>Contact</h2>
+
+            <p>
+                You can send me an <a href="mailto:boerni@beautifulmind.io">email</a> or
+                <br/><br/>
+            </p>
+
+            <p><a class="btn btn-success" href="https://twitter.com/#!/BeautifulMindio" target="_blank">Follow me on twitter! &raquo;</a></p>
+        </div>
+    </div>
+
+    <a href="https://github.com/nerdsportgruppe/BeautifulMind.io" target="_blank"><img id="forkme-ribbon" src="{{ STATIC_URL }}img/forkme_left_white_ffffff.png" alt="Fork me on GitHub"></a>
+
+    {% include 'includes/footer.html' %}
 </div>
-
-<a href="https://github.com/nerdsportgruppe/BeautifulMind.io" target="_blank"><img id="forkme-ribbon" src="{{ STATIC_URL }}img/forkme_left_white_ffffff.png" alt="Fork me on GitHub"></a>
-
-{% include 'includes/footer.html' %}
-
 {% endblock %}

@@ -5,7 +5,7 @@ BeautifulMind.io is a real-time collaborative mindmap tool inspired by [etherpad
 
 ## Contact
 
-*  [Twitter](https://twitter.com/#!/i_error)
+*  [Twitter](https://twitter.com/#!/BeautifulMindio)
 *  [boerni@beautifulmind.io](boerni@beautifulmind.io)
 
 

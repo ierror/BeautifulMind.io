@@ -9,8 +9,7 @@
 (function ($, window, document, undefined) {
     var version = '0.1',
         defaults = {
-            cross_shift_offset:10,
-            topbar_height:40
+            cross_shift_offset:10
         };
 
     function MindMapComponent(self, opts) {
@@ -108,6 +107,7 @@
         jsPlumb.draggable(self.element, {
             scroll:true,
             drag:function () {
+
                 var pos = self.element.position();
 
                 // get length vector last_pos->current-pos
@@ -116,12 +116,12 @@
                 );
 
                 // special shift: shift all other components down/right if dragged component crosses top/left border
-                if (pos.left < 0 || pos.top - self.options.topbar_height < 0) {
-                    if (pos.left < 0) {
+                if (pos.left <= 0 || pos.top <= 0) {
+                    if (pos.left <= 0) {
                         self._cross_shift_offset_current[0] += self.options.cross_shift_offset;
                         self._cross_shift_offset_total[0] += self.options.cross_shift_offset;
                     }
-                    if (pos.top - self.options.topbar_height < 0) {
+                    if (pos.top <= 0) {
                         self._cross_shift_offset_current[1] += self.options.cross_shift_offset;
                         self._cross_shift_offset_total[1] += self.options.cross_shift_offset;
                     }
@@ -131,10 +131,10 @@
                             comp_to_move_pos_left = comp_to_move.position().left + self.options.cross_shift_offset,
                             comp_to_move_pos_top = comp_to_move.position().top + self.options.cross_shift_offset;
 
-                        if (pos.left < 0) {
+                        if (pos.left <= 0) {
                             comp_to_move.css({left:comp_to_move_pos_left});
                         }
-                        if (pos.top - self.options.topbar_height < 0) {
+                        if (pos.top <= 0) {
                             comp_to_move.css({top:comp_to_move_pos_top});
                         }
                         jsPlumb.repaint(comp_to_move);
@@ -220,6 +220,7 @@
         // append component to map container
         opts.container.append(self.element);
 
+        // click on element activates it
         self.element.on('click', function () {
             self.toggleSelect();
         });
@@ -231,16 +232,9 @@
         return $('[data-parent-component-pk='+self.element.data('component-pk')+']', self.map);
     };
 
-    MindMapComponent.prototype.delete = function () {
+    MindMapComponent.prototype.getSiblingsRecursive = function() {
         var self = this;
-
-        // collect siblings
-        var siblings = new Array();
-
-        // only delete selected component if none root
-        if (!self.element.hasClass('component-root')) {
-            siblings.push(self.element);
-        }
+        var siblings = [];
 
         function _get_siblings(component) {
             component.data('mindmapMapComponent').getSiblings().each(function() {
@@ -249,7 +243,21 @@
                 _get_siblings(sibling);
             });
         }
+
         _get_siblings(self.element);
+        return siblings;
+    };
+
+    MindMapComponent.prototype.delete = function () {
+        var self = this;
+
+        // collect siblings
+        var siblings = self.getSiblingsRecursive();
+
+        // only delete selected component if none root
+        if (!self.element.hasClass('component-root')) {
+            siblings.push(self.element);
+        }
 
         $(siblings).each(function() {
             var component = $(this);

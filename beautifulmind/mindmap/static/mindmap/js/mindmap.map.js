@@ -194,7 +194,7 @@
                     });
 
                     // check if component overlaps navbar, if so fill space on bottom of parent
-                    var overlaps_navbar = component.element.position().top - self.options.topbar_height < 0;
+                    var overlaps_navbar = component.element.position().top - component.element.outerHeight() < 0;
                     if (overlaps_navbar) {
                         fill_space_on_top = false;
                         offset.top = parent_component_pos.top;
@@ -220,7 +220,7 @@
                     });
 
                     // check if component overlaps navbar, if so fill space on bottom of parent
-                    var overlaps_navbar = component.element.position().top - self.options.topbar_height < 0;
+                    var overlaps_navbar = component.element.position().top - component.element.outerHeight() < 0;
                     if (overlaps_navbar) {
                         fill_space_on_top = false;
                         offset.top = parent_component_pos.top;
@@ -295,6 +295,10 @@
 
     MindMap.prototype.updateParticipantsCount = function (count) {
         $('#mindmap-map-participants-count').html(count);
+    };
+
+    MindMap.prototype.getSelectedComponents = function() {
+        return $('.component-selected', self.element);
     };
 
     $.fn.mindmapMap = function (options) {
