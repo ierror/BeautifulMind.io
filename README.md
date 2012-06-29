@@ -16,7 +16,9 @@ BeautifulMind.io is a real-time collaborative mindmap tool inspired by [etherpad
 [Installation](https://github.com/nerdsportgruppe/BeautifulMind.io/wiki/Server-installation)
 
 ## Todo
-* revisions (rollback, diff)
+* revisions, timeline (rollback, diff)
+* colourize users and their actions
+* multiple select/drag
 * …
 
 ## License 
