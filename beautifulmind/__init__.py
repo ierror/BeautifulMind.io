@@ -1,4 +1,4 @@
-VERSION = (0, 1, 0, 'alpha', 0)
+VERSION = (0, 2, 0, 'dev', 1)
 
 # Taken from Django project
 def get_version(version=None):
@@ -6,7 +6,7 @@ def get_version(version=None):
     if version is None:
         version = VERSION
     assert len(version) == 5
-    assert version[3] in ('alpha', 'beta', 'rc', 'final')
+    assert version[3] in ('alpha', 'beta', 'rc', 'final', 'dev')
 
     # Now build the two parts of the version number:
     # main = X.Y[.Z]
@@ -25,7 +25,10 @@ def get_version(version=None):
             sub = '.dev%s' % svn_revision
 
     elif version[3] != 'final':
-        mapping = {'alpha': 'a', 'beta': 'b', 'rc': 'c'}
-        sub = mapping[version[3]] + str(version[4])
+        if version[3] == 'dev':
+            sub = version[3]
+        else:
+            mapping = {'alpha': 'a', 'beta': 'b', 'rc': 'c', 'dev': 'dev'}
+            sub = mapping[version[3]] + str(version[4])
 
     return main + sub
