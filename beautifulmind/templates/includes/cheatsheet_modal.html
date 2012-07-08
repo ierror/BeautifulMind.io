@@ -5,13 +5,21 @@
         <h3>{% trans 'Cheatsheet' %}</h3>
     </div>
     <div class="modal-body">
-        <h4>Actions that can be applied to an active component</h4>
-
-        <p>Click a component to make it active. Result:
-            <img src="{{STATIC_URL}}img/cheatsheet/active_component.png">
+        <h4>{% trans 'Move component' %}</h4>
+        <p>
+            {% trans 'Hover a component until crosshair cursor appears. Now start dragging by click and move the mouse.:' %}
+            <img src="{{STATIC_URL}}img/cheatsheet/component_move.png">
         </p>
 
-        <p>Now it's time to apply some actions to our active component:</p>
+        <hr/>
+
+        <h4>{% trans 'Actions that can be applied to an active component' %}</h4>
+        <p>
+            {% trans 'Click a component to make it active. Result:' %}
+            <img src="{{STATIC_URL}}img/cheatsheet/component_active.png">
+        </p>
+
+        <p>{% trans "Now it's time to apply some actions to our active component:" %}</p>
 
         <table class="table table-striped">
             <thead>
