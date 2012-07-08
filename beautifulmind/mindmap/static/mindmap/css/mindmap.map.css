@@ -10,7 +10,7 @@
     -webkit-box-shadow: 1px 1px 1px 1px #ccc;
     box-shadow: 1px 1px 1px 1px #ccc;
 
-    border: 2px solid #8f8f8f;
+    border: 3px solid #8f8f8f;
     width: 110px;
     height: 30px;
     z-index: 20;
@@ -29,7 +29,7 @@
 }
 
 #mindmap-map .component-root {
-    border-width: 3px;
+    border-width: 4px;
 }
 
 #mindmap-map .component .component-title {
