@@ -18,7 +18,7 @@ class Command(BaseCommand):
             app_kwargs['debug'] = True
 
         app = web.Application(MindmapWebSocketRouter.urls, **app_kwargs)
-        app.listen(settings.MINDMAPTORNADO_BIND_PORT)
+        app.listen(settings.MINDMAPTORNADO_BIND_PORT, settings.MINDMAPTORNADO_BIND_IP)
 
         try:
             ioloop.IOLoop.instance().start()
