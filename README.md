@@ -13,7 +13,7 @@ BeautifulMind.io is a real-time collaborative mindmap tool inspired by [etherpad
 [view](http://beautifulmind.io)
 
 ## Installation
-[Installation](https://github.com/nerdsportgruppe/BeautifulMind.io/wiki/Server-installation)
+[Installation](https://github.com/ierror/BeautifulMind.io/wiki/Server-installation)
 
 ## Todo
 * revisions, timeline (rollback, diff)
