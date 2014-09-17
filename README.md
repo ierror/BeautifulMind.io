@@ -1,5 +1,7 @@
 # BeautifulMind.io
 
+*Please note that i am no longer working on this project!*
+
 BeautifulMind.io is a real-time collaborative mindmap tool inspired by [etherpad-lite][].
 [etherpad-lite]: https://github.com/Pita/etherpad-lite
 
