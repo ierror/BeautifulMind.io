@@ -10,8 +10,8 @@
     <!-- Le styles -->
     {% compress css %}
     <link href="{{ STATIC_URL }}css/global.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}js/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}js/lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}js/vendor/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     {% endcompress %}
 
     <!-- app styles -->
@@ -21,7 +21,7 @@
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     {% compress js %}
-    <script src="{{ STATIC_URL }}js/lib/html5shiv.js"></script>
+    <script src="{{ STATIC_URL }}js/vendor/html5shiv.js"></script>
     {% endcompress %}
 
     <![endif]-->
@@ -86,9 +86,9 @@
 
 <!-- global javascript -->
 {% compress js %}
-<script src="{{ STATIC_URL }}js/lib/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
-<script src="{{ STATIC_URL }}js/lib/jquery-ui-1.8.20.custom.js" type="text/javascript" charset="utf-8"></script>
-<script src="{{ STATIC_URL }}js/lib/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/vendor/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/vendor/jquery-ui-1.8.20.custom.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}js/vendor/bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}js/boostrap.modal.form.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}js/global.js" type="text/javascript" charset="utf-8"></script>
 <script src="{{ STATIC_URL }}js/tracking.js" type="text/javascript" charset="utf-8"></script>
